@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Domains — Real World Problems & Solutions — Odoo Mastery</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .content-wrapper{max-width:920px;margin:0 auto;padding:40px 40px 80px}
+        .content-wrapper h2{font-size:24px;font-weight:700;margin:36px 0 10px;padding-bottom:8px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:10px}
+        .content-wrapper h3{font-size:17px;font-weight:600;margin:18px 0 6px;color:var(--primary)}
+        .content-wrapper h4{font-size:15px;font-weight:600;margin:14px 0 6px;color:var(--text)}
+        .content-wrapper p,.content-wrapper li{font-size:15px;line-height:1.7;color:var(--text-light)}
+        .content-wrapper ul{margin:8px 0 16px 20px}.content-wrapper li{margin-bottom:4px}
+        .code-block{background:#1e1e2e;border-radius:10px;margin:12px 0 16px;border:1px solid #313244;overflow:hidden}
+        .code-block .code-header{display:flex;align-items:center;justify-content:space-between;padding:7px 16px;background:#181825;border-bottom:1px solid #313244}
+        .code-block .dots{display:flex;gap:6px}.code-block .dots span{width:10px;height:10px;border-radius:50%}
+        .code-block .dots span:nth-child(1){background:#f38ba8}.code-block .dots span:nth-child(2){background:#f9e2af}.code-block .dots span:nth-child(3){background:#a6e3a1}
+        .code-block .lang-label{font-size:10px;color:#6c7086;text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+        .code-block .copy-btn{background:0 0;border:1px solid #45475a;color:#6c7086;padding:3px 10px;border-radius:5px;font-size:10px;cursor:pointer;font-family:inherit;transition:all .2s}
+        .code-block .copy-btn:hover{background:#313244;color:#cdd6f4}
+        .code-block .code-body{display:flex;overflow-x:auto}
+        .code-block .line-numbers{padding:12px 0;text-align:right;user-select:none;border-right:1px solid #313244;background:#181825;min-width:40px;flex-shrink:0}
+        .code-block .line-numbers span{display:block;padding:0 10px;font-size:11px;line-height:1.65;color:#45475a;font-family:'JetBrains Mono','Consolas',monospace}
+        .code-block pre{margin:0;padding:12px 18px;flex:1;overflow-x:auto;white-space:pre;tab-size:4}
+        .code-block pre code{font-family:'JetBrains Mono','Fira Code','Consolas',monospace;font-size:12.5px;line-height:1.65;color:#cdd6f4;background:0 0;padding:0;white-space:pre}
+        .cm{color:#6c7086;font-style:italic}.kw{color:#cba6f7}.st{color:#a6e3a1}.fn{color:#89b4fa}.cl{color:#f9e2af}.nu{color:#fab387}.op{color:#89dceb}.dc{color:#94e2d5}.sf{color:#f5c2e7}
+        .problem-box{background:linear-gradient(135deg,#fee2e2,#fecaca);border-left:3px solid #dc2626;padding:14px 18px;border-radius:0 10px 10px 0;margin:16px 0}
+        .problem-box strong{color:#991b1b}
+        .solution-box{background:linear-gradient(135deg,#dcfce7,#bbf7d0);border-left:3px solid #16a34a;padding:14px 18px;border-radius:0 10px 10px 0;margin:16px 0}
+        .solution-box strong{color:#166534}
+        .info-box{background:rgba(0,160,157,.06);border-left:3px solid var(--accent);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px}
+        .operator-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:12px 0}
+        .operator-item{background:#f8fafc;border:1px solid #e2e8f0;padding:8px 12px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:12px}
+        .nav-bottom{display:flex;justify-content:space-between;margin-top:48px;padding-top:24px;border-top:2px solid var(--border)}
+        .nav-bottom a{display:flex;align-items:center;gap:8px;padding:10px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;font-weight:600;font-size:13px;transition:var(--transition)}
+        .nav-bottom a:hover{border-color:var(--primary);color:var(--primary);box-shadow:var(--shadow-md)}
+    </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+    <a href="../index.html" class="nav-logo"><div class="logo-icon">O</div>Odoo Mastery</a>
+    <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../main/developer.html" class="active">Developer</a></li>
+    </ul>
+</nav>
+
+<div class="breadcrumb-bar">
+    <div class="breadcrumb">
+        <a href="../index.html">🏠 Home</a><span class="sep">›</span>
+        <a href="../main/developer.html">Developer</a><span class="sep">›</span>
+        <span class="current">Domains — Real Problems</span>
+    </div>
+</div>
+
+<div class="page-hero" style="padding:40px">
+    <h1>🎯 Domains — Real World Guide</h1>
+    <p>Har wo problem jo tumhe domains mein milegi — aur uska solution yahan hai</p>
+</div>
+
+<div class="content-wrapper">
+
+    <h2>📋 Domain Operators Reference</h2>
+    <div class="operator-grid">
+        <div class="operator-item">= (equals)</div>
+        <div class="operator-item">!= (not equals)</div>
+        <div class="operator-item">&gt; (greater)</div>
+        <div class="operator-item">&lt; (less)</div>
+        <div class="operator-item">&gt;= (gte)</div>
+        <div class="operator-item">&lt;= (lte)</div>
+        <div class="operator-item">in (list mein)</div>
+        <div class="operator-item">not in (list mein nahi)</div>
+        <div class="operator-item">like (%pattern%)</div>
+        <div class="operator-item">ilike (case insensitive)</div>
+        <div class="operator-item">=like (exact %)</div>
+        <div class="operator-item">child_of (hierarchy)</div>
+        <div class="operator-item">parent_of (up hierarchy)</div>
+    </div>
+
+    <!-- PROBLEM 1 -->
+    <h2>Problem 1: "AND vs OR confusion"</h2>
+    <div class="problem-box">
+        <strong>🛑 Problem:</strong> Mujhe aise customers chahiye jo India ke hain YA (gmail use karte hain AND active hain). Lekin domain galat lag raha hai.
+    </div>
+    <div class="solution-box">
+        <strong>✅ Solution:</strong> Prefix notation use karo — '|' OR ke liye, '&' AND ke liye (default AND hota hai).
+    </div>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span></div>
+<pre><code><span class="cm"># Requirement: (Country = India) OR (Email has gmail AND Active = True)</span>
+
+<span class="cm"># ❌ Wrong - This means: India OR (gmail AND active)</span>
+<span class="cm"># But default AND hota hai, so yeh banega:</span>
+<span class="cm"># (India AND gmail) OR active - Galat!</span>
+
+<span class="cm"># ✅ Correct - Explicit OR at start</span>
+<span class="sf">domain</span> = [
+    <span class="st">'|'</span>,   <span class="cm"># ← First OR operator</span>
+    (<span class="st">'country_id.code'</span>, <span class="op">=</span>, <span class="st">'IN'</span>),
+    <span class="st">'&'</span>,   <span class="cm"># ← AND for next two</span>
+    (<span class="st">'email'</span>, <span class="st">'ilike'</span>, <span class="st">'gmail'</span>),
+    (<span class="st">'active'</span>, <span class="op">=</span>, <span class="kw">True</span>),
+]
+
+<span class="cm"># Visual: ['|', A, '&', B, C]</span>
+<span class="cm"># Tree:        OR</span>
+<span class="cm">#            /  \</span>
+<span class="cm">#           A   AND</span>
+<span class="cm">#               / \</span>
+<span class="cm">#              B   C</span></code></pre></div></div>
+
+    <!-- PROBLEM 2 -->
+    <h2>Problem 2: "Many2one field blank hai tab domain fail"</h2>
+    <div class="problem-box">
+        <strong>🛑 Problem:</strong> Partner select nahi kiya toh <code>partner_id.city</code> access karte waqt error aata hai.
+    </div>
+    <div class="solution-box">
+        <strong>✅ Solution:</strong> Pehle check karo ki field set hai ya nahi. <code>parent.field</code> safe access ke liye.
+    </div>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span></div>
+<pre><code><span class="cm"># ❌ Error if partner_id is empty</span>
+<span class="cm"># domain = [('partner_id.city', '=', 'Mumbai')]</span>
+
+<span class="cm"># ✅ Safe way</span>
+<span class="sf">domain</span> = [
+    (<span class="st">'partner_id'</span>, <span class="st">'!='</span>, <span class="kw">False</span>),  <span class="cm"># Pehle ensure karo set hai</span>
+    (<span class="st">'partner_id.city'</span>, <span class="op">=</span>, <span class="st">'Mumbai'</span>),
+]
+
+<span class="cm"># Ya phir onchange mein handle karo:</span>
+<span class="dc">@api.onchange</span>(<span class="st">'partner_id'</span>)
+<span class="kw">def</span> <span class="fn">_onchange_partner</span>(<span class="sf">self</span>):
+    <span class="kw">if</span> <span class="sf">self</span>.partner_id:
+        <span class="kw">return</span> {<span class="st">'domain'</span>: {<span class="st">'child_ids'</span>: [(<span class="st">'city'</span>, <span class="op">=</span>, <span class="sf">self</span>.partner_id.city)]}}
+    <span class="kw">else</span>:
+        <span class="kw">return</span> {<span class="st">'domain'</span>: {<span class="st">'child_ids'</span>: [(<span class="st">'id'</span>, <span class="op">=</span>, <span class="kw">False</span>)]}}</code></pre></div></div>
+
+    <!-- PROBLEM 3 -->
+    <h2>Problem 3: "Dynamic domain based on user — Security issue"</h2>
+    <div class="problem-box">
+        <strong>🛑 Problem:</strong> Sales user ko sirf apne assigned customers dikhane chahiye. Lekin domain XML mein hardcoded hai.
+    </div>
+    <div class="solution-box">
+        <strong>✅ Solution:</strong> <code>ir.actions.act_window</code> mein dynamic domain lagao ya <code>search</code> method override karo.
+    </div>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">XML + Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span></div>
+<pre><code><span class="cm"># ── Method 1: Action mein user_id filter ──</span>
+<span class="cm"># XML:</span>
+&lt;record id=<span class="st">"action_my_customers"</span> model=<span class="st">"ir.actions.act_window"</span>&gt;
+    &lt;field name=<span class="st">"name"</span>&gt;My Customers&lt;/field&gt;
+    &lt;field name=<span class="st">"res_model"</span>&gt;res.partner&lt;/field&gt;
+    &lt;field name=<span class="st">"domain"</span>&gt;[('user_id', '=', uid)]&lt;/field&gt;
+&lt;/record&gt;
+
+<span class="cm"># ── Method 2: Override search (Record Rules jaisa) ──</span>
+<span class="kw">def</span> <span class="fn">search</span>(<span class="sf">self</span>, args, offset=<span class="nu">0</span>, limit=<span class="kw">None</span>, order=<span class="kw">None</span>, count=<span class="kw">False</span>):
+    <span class="cm"># Sales user hai toh filter lagao</span>
+    <span class="kw">if</span> <span class="sf">self</span>.env.user.<span class="fn">has_group</span>(<span class="st">'sales_team.group_sale_salesman'</span>):
+        <span class="kw">if</span> <span class="kw">not</span> <span class="sf">self</span>.env.user.<span class="fn">has_group</span>(<span class="st">'sales_team.group_sale_manager'</span>):
+            args += [(<span class="st">'user_id'</span>, <span class="op">=</span>, <span class="sf">self</span>.env.uid)]
+    <span class="kw">return</span> <span class="kw">super</span>().<span class="fn">search</span>(args, offset, limit, order, count)</code></pre></div></div>
+
+    <!-- PROBLEM 4 -->
+    <h2>Problem 4: "Date range filter — Last 30 days"</h2>
+    <div class="problem-box">
+        <strong>🛑 Problem:</strong> Dashboard mein sirf last 30 days ke orders dikhane hain.
+    </div>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span></div>
+<pre><code><span class="kw">from</span> datetime <span class="kw">import</span> datetime, timedelta
+
+<span class="cm"># ── Last 30 days ──</span>
+<span class="sf">thirty_days_ago</span> = datetime.<span class="fn">now</span>() - timedelta(days=<span class="nu">30</span>)
+
+<span class="sf">domain</span> = [
+    (<span class="st">'date_order'</span>, <span class="op">&gt;=</span>, thirty_days_ago),
+    (<span class="st">'state'</span>, <span class="op">=</span>, <span class="st">'sale'</span>),
+]
+
+<span class="cm"># ── Current Month ──</span>
+<span class="sf">start_of_month</span> = datetime.<span class="fn">now</span>().replace(day=<span class="nu">1</span>)
+
+<span class="cm"># ── This Financial Year ──</span>
+<span class="cm"># Odoo mein usually env.company.compute_fiscalyear_dates() use karte hain</span>
+<span class="sf">start</span>, <span class="sf">end</span> = <span class="sf">self</span>.env.company.<span class="fn">compute_fiscalyear_dates</span>(datetime.<span class="fn">now</span>())
+<span class="sf">domain</span> = [(<span class="st">'date'</span>, <span class="st">'&gt;='</span>, start), (<span class="st">'date'</span>, <span class="st">'&lt;='</span>, end)]</code></pre></div></div>
+
+    <!-- PROBLEM 5 -->
+    <h2>Problem 5: "Related field pe domain lagana hai"</h2>
+    <div class="problem-box">
+        <strong>🛑 Problem:</strong> Product select karte waqt sirf uss category ke products dikhane hain jo partner ke allowed categories mein hain.
+    </div>
+    <div class="solution-box">
+        <strong>✅ Solution:</strong> <code>domain</code> attribute in XML with parent reference ya <code>onchange</code> mein dynamic domain return karo.
+    </div>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">XML + Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span></div>
+<pre><code><span class="cm"># ── XML: Parent field reference ──</span>
+&lt;field name=<span class="st">"product_id"</span> 
+       domain=<span class="st">"[('categ_id', '=', parent.allowed_categ_id)]"</span>/&gt;
+
+<span class="cm"># ── Python: Dynamic based on context ──</span>
+<span class="sf">allowed_products</span> = <span class="sf">self</span>.env.context.get(<span class="st">'allowed_product_ids'</span>, [])
+<span class="sf">domain</span> = [(<span class="st">'id'</span>, <span class="st">'in'</span>, allowed_products)]
+
+<span class="cm"># ── Complex: Partner ke hisaab se product filter ──</span>
+<span class="dc">@api.onchange</span>(<span class="st">'partner_id'</span>)
+<span class="kw">def</span> <span class="fn">_onchange_partner_product_domain</span>(<span class="sf">self</span>):
+    <span class="kw">if</span> <span class="sf">self</span>.partner_id:
+        <span class="sf">allowed_categs</span> = <span class="sf">self</span>.partner_id.allowed_category_ids.ids
+        <span class="kw">return</span> {
+            <span class="st">'domain'</span>: {<span class="st">'product_id'</span>: [(<span class="st">'categ_id'</span>, <span class="st">'in'</span>, allowed_categs)]}
+        }
+    <span class="kw">return</span> {<span class="st">'domain'</span>: {<span class="st">'product_id'</span>: [(<span class="st">'id'</span>, <span class="op">=</span>, <span class="kw">False</span>)]}}</code></pre></div></div>
+
+    <!-- PROBLEM 6 -->
+    <h2>Problem 6: "Hierarchy — Sirf iske children dikhane hain"</h2>
+    <div class="problem-box">
+        <strong>🛑 Problem:</strong> Manager ne apne neeche ke employees dikhane hain (self + all subordinates recursively).
+    </div>
+    <div class="solution-box">
+        <strong>✅ Solution:</strong> <code>child_of</code> operator — yeh recursive search karta hai.
+    </div>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span></div>
+<pre><code><span class="cm"># ── child_of: Self + All descendants ──</span>
+<span class="sf">domain</span> = [(<span class="st">'employee_id'</span>, <span class="st">'child_of'</span>, <span class="sf">self</span>.env.user.employee_id.id)]
+
+<span class="cm"># ── parent_of: Self + All ancestors ──</span>
+<span class="sf">domain</span> = [(<span class="st">'id'</span>, <span class="st">'parent_of'</span>, some_employee_id)]
+
+<span class="cm"># ── Example: Manager ka team ──</span>
+<span class="kw">class</span> <span class="cl">HrLeave</span>(models.Model):
+    <span class="cm"># ...</span>
+    
+    <span class="kw">def</span> <span class="fn">action_approve</span>(<span class="sf">self</span>):
+        <span class="cm"># Sirf apne team ke leaves approve kar sakta hai</span>
+        <span class="kw">if</span> <span class="sf">self</span>.employee_id <span class="kw">not in</span> <span class="sf">self</span>.env[<span class="st">'hr.employee'</span>].<span class="fn">search</span>(
+            [(<span class="st">'id'</span>, <span class="st">'child_of'</span>, <span class="sf">self</span>.env.user.employee_id.id)]
+        ):
+            <span class="kw">raise</span> AccessError(<span class="st">"Not your team member!"</span>)</code></pre></div></div>
+
+    <h2>Quick Reference: Common Patterns</h2>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Patterns</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span></div>
+<pre><code><span class="cm"># Empty/Set check</span>
+[(<span class="st">'field'</span>, <span class="st">'='</span>, <span class="kw">False</span>)]        <span class="cm"># Empty</span>
+[(<span class="st">'field'</span>, <span class="st">'!='</span>, <span class="kw">False</span>)]       <span class="cm"># Set (any value)</span>
+
+<span class="cm"># List containment</span>
+[(<span class="st">'id'</span>, <span class="st">'in'</span>, [1,2,3])]        <span class="cm"># In list</span>
+[(<span class="st">'id'</span>, <span class="st">'not in'</span>, [4,5])]      <span class="cm"># Not in list</span>
+
+<span class="cm"># Text search</span>
+[(<span class="st">'name'</span>, <span class="st">'ilike'</span>, <span class="st">'raju'</span>)]   <span class="cm"># Case insensitive</span>
+[(<span class="st">'code'</span>, <span class="st">'=like'</span>, <span class="st">'INV-%'</span>)]   <span class="cm"># Starts with INV-</span>
+
+<span class="cm"># Date ranges</span>
+[(<span class="st">'date'</span>, <span class="st">'&gt;='</span>, start), (<span class="st">'date'</span>, <span class="st">'&lt;='</span>, end)]
+
+<span class="cm"># Many2one exists</span>
+[(<span class="st">'partner_id'</span>, <span class="st">'!='</span>, <span class="kw">False</span>)]  <span class="cm"># Has partner</span></code></pre></div></div>
+
+    <div class="nav-bottom">
+        <a href="dev-constraints.html">← Constraints</a>
+        <a href="../main/developer.html">Back to Topics →</a>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-brand"><div class="footer-logo">🟣 Odoo Mastery</div></div>
+    </div>
+    <div class="footer-bottom">© 2025 Odoo Mastery</div>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>20)});
+function copyCode(b){const c=b.closest('.code-block').querySelector('pre code').textContent;navigator.clipboard.writeText(c).then(()=>{b.textContent='✅ Copied!';setTimeout(()=>b.textContent='📋 Copy',2000)})}
+</script>
+</body>
+</html>
