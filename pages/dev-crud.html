@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Operations — Odoo Mastery</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .content-wrapper{max-width:920px;margin:0 auto;padding:40px 40px 80px}
+        .content-wrapper h2{font-size:24px;font-weight:700;margin:36px 0 10px;padding-bottom:8px;border-bottom:2px solid var(--border);display:flex;align-items:center;gap:10px}
+        .content-wrapper h3{font-size:17px;font-weight:600;margin:18px 0 6px;color:var(--primary)}
+        .content-wrapper p,.content-wrapper li{font-size:15px;line-height:1.7;color:var(--text-light)}
+        .content-wrapper ul{margin:8px 0 16px 20px}.content-wrapper li{margin-bottom:4px}
+        .code-block{background:#1e1e2e;border-radius:10px;margin:12px 0 16px;border:1px solid #313244;overflow:hidden}
+        .code-block .code-header{display:flex;align-items:center;justify-content:space-between;padding:7px 16px;background:#181825;border-bottom:1px solid #313244}
+        .code-block .dots{display:flex;gap:6px}.code-block .dots span{width:10px;height:10px;border-radius:50%}
+        .code-block .dots span:nth-child(1){background:#f38ba8}.code-block .dots span:nth-child(2){background:#f9e2af}.code-block .dots span:nth-child(3){background:#a6e3a1}
+        .code-block .lang-label{font-size:10px;color:#6c7086;text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+        .code-block .copy-btn{background:0 0;border:1px solid #45475a;color:#6c7086;padding:3px 10px;border-radius:5px;font-size:10px;cursor:pointer;font-family:inherit;transition:all .2s}
+        .code-block .copy-btn:hover{background:#313244;color:#cdd6f4}
+        .code-block .code-body{display:flex;overflow-x:auto}
+        .code-block .line-numbers{padding:12px 0;text-align:right;user-select:none;border-right:1px solid #313244;background:#181825;min-width:40px;flex-shrink:0}
+        .code-block .line-numbers span{display:block;padding:0 10px;font-size:11px;line-height:1.65;color:#45475a;font-family:'JetBrains Mono','Consolas',monospace}
+        .code-block pre{margin:0;padding:12px 18px;flex:1;overflow-x:auto;white-space:pre;tab-size:4}
+        .code-block pre code{font-family:'JetBrains Mono','Fira Code','Consolas',monospace;font-size:12.5px;line-height:1.65;color:#cdd6f4;background:0 0;padding:0;white-space:pre}
+        .cm{color:#6c7086;font-style:italic}.kw{color:#cba6f7}.st{color:#a6e3a1}.fn{color:#89b4fa}.cl{color:#f9e2af}.nu{color:#fab387}.op{color:#89dceb}.dc{color:#94e2d5}.sf{color:#f5c2e7}
+        .method-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;margin:14px 0;overflow:hidden;transition:var(--transition)}
+        .method-card:hover{box-shadow:var(--shadow-md);border-color:rgba(113,75,103,.2)}
+        .method-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;cursor:pointer;user-select:none;gap:12px}
+        .method-header:hover{background:rgba(113,75,103,.02)}
+        .method-title-group{display:flex;align-items:center;gap:12px;flex:1;min-width:0}
+        .method-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+        .method-name{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--text)}
+        .method-one-liner{font-size:12px;color:var(--text-light);margin-top:1px}
+        .method-badges{display:flex;gap:6px;flex-shrink:0}
+        .badge{padding:3px 8px;border-radius:5px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+        .badge-read{background:#E8F8F5;color:#00A09D}.badge-write{background:#FFF3E0;color:#E67E22}.badge-delete{background:#FCE4EC;color:#E74C3C}
+        .badge-search{background:#E8EAF6;color:#5C6BC0}.badge-util{background:#F3E5F5;color:#8E24AA}.badge-record{background:#E0F2F1;color:#00897B}
+        .method-toggle{font-size:16px;color:var(--text-muted);transition:transform .3s ease;flex-shrink:0}
+        .method-card.open .method-toggle{transform:rotate(180deg)}
+        .method-body{display:none;padding:4px 18px 18px;border-top:1px solid var(--border)}
+        .method-card.open .method-body{display:block}
+        .hinglish-note{background:linear-gradient(135deg,#FFF8E1,#FFF3E0);border-left:3px solid #FFB300;padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px;line-height:1.6}
+        .hinglish-note strong{color:#E65100}
+        .reallife-box{background:linear-gradient(135deg,#E8F5E9,#E0F2F1);border-left:3px solid #43A047;padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px}
+        .reallife-box strong{color:#2E7D32}
+        .info-box{background:rgba(0,160,157,.06);border-left:3px solid var(--accent);padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px}
+        .info-box strong{color:var(--accent)}
+        .warning-box{background:rgba(231,76,60,.06);border-left:3px solid #E74C3C;padding:10px 14px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px}
+        .warning-box strong{color:#E74C3C}
+        .syntax-box{background:#f0f1f3;border:1px solid var(--border);border-radius:8px;padding:10px 16px;margin:8px 0;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--primary-dark);white-space:pre;overflow-x:auto}
+        .returns-table{width:100%;border-collapse:collapse;margin:8px 0;font-size:13px}
+        .returns-table th{background:var(--bg);padding:8px 12px;text-align:left;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);border-bottom:2px solid var(--border)}
+        .returns-table td{padding:8px 12px;border-bottom:1px solid var(--border);color:var(--text-light)}
+        .returns-table code{background:#f0f0f0;padding:2px 6px;border-radius:4px;font-size:12px;color:var(--primary)}
+        .toc{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin:20px 0}
+        .toc h3{margin:0 0 12px;font-size:16px;color:var(--text)}
+        .toc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:4px}
+        .toc-grid a{display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:6px;font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--text-light);transition:var(--transition)}
+        .toc-grid a:hover{background:rgba(113,75,103,.06);color:var(--primary)}
+        .toc-grid .toc-num{width:22px;height:22px;background:var(--bg);border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--text-muted);flex-shrink:0}
+        .section-divider{display:flex;align-items:center;gap:12px;margin:36px 0 6px}
+        .section-divider .divider-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px}
+        .section-divider .divider-text h2{margin:0;border:none;padding:0;font-size:20px}
+        .section-divider .divider-text p{font-size:13px;margin:0}
+        .expand-controls{display:flex;gap:10px;margin:14px 0}
+        .expand-btn{padding:6px 14px;border-radius:6px;border:1px solid var(--border);background:#fff;cursor:pointer;font-size:12px;font-weight:500;color:var(--text-light);font-family:inherit;transition:var(--transition)}
+        .expand-btn:hover{border-color:var(--primary);color:var(--primary)}
+        .nav-bottom{display:flex;justify-content:space-between;margin-top:48px;padding-top:24px;border-top:2px solid var(--border)}
+        .nav-bottom a{display:flex;align-items:center;gap:8px;padding:10px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:10px;font-weight:600;font-size:13px;transition:var(--transition)}
+        .nav-bottom a:hover{border-color:var(--primary);color:var(--primary);box-shadow:var(--shadow-md)}
+        @media(max-width:768px){.content-wrapper{padding:24px 16px 60px}.method-header{flex-wrap:wrap}.method-badges{order:3;width:100%;margin-top:6px}.toc-grid{grid-template-columns:1fr 1fr}.code-block .line-numbers{display:none}.code-block pre{padding:12px}}
+    </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+    <a href="../index.html" class="nav-logo"><div class="logo-icon">O</div>Odoo Mastery</a>
+    <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../main/developer.html" class="active">Developer</a></li>
+        <li><a href="../main/functional.html">Functional</a></li>
+    </ul>
+</nav>
+<div class="breadcrumb-bar">
+    <div class="breadcrumb">
+        <a href="../index.html">🏠 Home</a><span class="sep">›</span>
+        <a href="../main/developer.html">Developer</a><span class="sep">›</span>
+        <span class="current">CRUD Operations</span>
+    </div>
+</div>
+<div class="page-hero" style="padding:40px">
+    <h1>✏️ CRUD Operations — Create, Read, Update, Delete</h1>
+    <p>Odoo ki jaan — inhe samjho toh ORM pe command ho jaaye</p>
+</div>
+<div class="content-wrapper">
+    <h2>📖 What is CRUD?</h2>
+    <p>CRUD = <strong>C</strong>reate, <strong>R</strong>ead, <strong>U</strong>pdate, <strong>D</strong>elete — yeh chaar operations hain jo kisi bhi database app ki backbone hote hain. Odoo mein har model ke liye yeh methods built-in hain.</p>
+    <div class="info-box"><strong>💡 Note:</strong> Yeh methods ORM page mein detail mein hain. Yahan sirf quick reference aur advanced usage diya gaya hai.</div>
+
+    <div class="toc">
+        <h3>📑 Methods</h3>
+        <div class="toc-grid">
+            <a href="#create"><span class="toc-num">1</span>create()</a>
+            <a href="#write"><span class="toc-num">2</span>write()</a>
+            <a href="#read"><span class="toc-num">3</span>read()</a>
+            <a href="#unlink"><span class="toc-num">4</span>unlink()</a>
+            <a href="#copy"><span class="toc-num">5</span>copy()</a>
+            <a href="#multi"><span class="toc-num">6</span>Multi-Record</a>
+        </div>
+    </div>
+    <div class="expand-controls">
+        <button class="expand-btn" onclick="expandAll()">📂 Expand All</button>
+        <button class="expand-btn" onclick="collapseAll()">📁 Collapse All</button>
+    </div>
+
+    <div class="section-divider"><div class="divider-icon" style="background:rgba(39,174,96,.1);color:#27AE60">✏️</div><div class="divider-text"><h2>CRUD Methods</h2><p>Create, Write, Read, Delete</p></div></div>
+
+    <div class="method-card" id="create">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group"><div class="method-icon icon-green">✨</div><div><div class="method-name">.create(vals)</div><div class="method-one-liner">Naya record banata hai</div></div></div>
+            <div class="method-badges"><span class="badge badge-write">WRITE</span></div><span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Naya record banana ho toh <code>create()</code>. Ek dict de, Odoo record bana ke return karega.</div>
+            <div class="syntax-box">record = self.env['model'].create({'field': value})</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
+<pre><code><span class="sf">partner</span> = <span class="sf">self</span>.env[<span class="st">'res.partner'</span>].<span class="fn">create</span>({
+    <span class="st">'name'</span>: <span class="st">'Rahul Sharma'</span>,
+    <span class="st">'email'</span>: <span class="st">'rahul@example.com'</span>,
+})
+<span class="fn">print</span>(partner.id)  <span class="cm"># → 42</span>
+
+<span class="cm"># ── Multiple records ──</span>
+<span class="sf">prods</span> = <span class="sf">self</span>.env[<span class="st">'product.product'</span>].<span class="fn">create</span>([
+    {<span class="st">'name'</span>: <span class="st">'Laptop'</span>, <span class="st">'list_price'</span>: <span class="nu">50000</span>},
+    {<span class="st">'name'</span>: <span class="st">'Mouse'</span>,  <span class="st">'list_price'</span>: <span class="nu">500</span>},
+])</code></pre></div></div>
+        </div>
+    </div>
+
+    <div class="method-card" id="write">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group"><div class="method-icon icon-orange">📝</div><div><div class="method-name">.write(vals)</div><div class="method-one-liner">Record update karo</div></div></div>
+            <div class="method-badges"><span class="badge badge-write">WRITE</span></div><span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Pehle se existing record mein change karna ho — <code>write()</code>. Ek dictionary do.</div>
+            <div class="syntax-box">recordset.write({'field': new_value})</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+<pre><code><span class="sf">partner</span> = <span class="sf">self</span>.env[<span class="st">'res.partner'</span>].<span class="fn">browse</span>(<span class="nu">42</span>)
+partner.<span class="fn">write</span>({<span class="st">'name'</span>: <span class="st">'Rahul Kumar'</span>, <span class="st">'phone'</span>: <span class="st">'99999'</span>})
+
+<span class="cm"># ── Shortcut (internally write hota hai) ──</span>
+partner.name = <span class="st">'New Name'</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <div class="method-card" id="read">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group"><div class="method-icon icon-blue">📖</div><div><div class="method-name">.read(fields)</div><div class="method-one-liner">Data dictionary mein le aao</div></div></div>
+            <div class="method-badges"><span class="badge badge-read">READ</span></div><span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Record ko dict mein chahiye (API response ya debug) toh <code>read()</code>. List of dicts return karta hai.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span></div>
+<pre><code><span class="sf">data</span> = partner.<span class="fn">read</span>([<span class="st">'name'</span>, <span class="st">'email'</span>])
+<span class="cm"># → [{'id': 42, 'name': 'Rahul', 'email': '...'}]</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <div class="method-card" id="unlink">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group"><div class="method-icon icon-red">🗑️</div><div><div class="method-name">.unlink()</div><div class="method-one-liner">Record delete karo</div></div></div>
+            <div class="method-badges"><span class="badge badge-delete">DELETE</span></div><span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Permanently delete. Ek baar gaya toh wapas nahi.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span></div>
+<pre><code>partner.<span class="fn">unlink</span>()
+<span class="cm"># Multiple bhi: partners.unlink()</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <div class="method-card" id="copy">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group"><div class="method-icon icon-green">📋</div><div><div class="method-name">.copy(default)</div><div class="method-one-liner">Duplicate banao</div></div></div>
+            <div class="method-badges"><span class="badge badge-write">WRITE</span></div><span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span></div>
+<pre><code><span class="sf">new_order</span> = order.<span class="fn">copy</span>()  <span class="cm"># Simple duplicate</span>
+<span class="sf">new_order</span> = order.<span class="fn">copy</span>(default={
+    <span class="st">'client_order_ref'</span>: <span class="st">'COPY-001'</span>
+})</code></pre></div></div>
+        </div>
+    </div>
+
+    <div class="method-card" id="multi">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group"><div class="method-icon icon-purple">📦</div><div><div class="method-name">Multi-Record Operations</div><div class="method-one-liner">Ek saath multiple records pe kaam karo</div></div></div>
+            <div class="method-badges"><span class="badge badge-util">TRICK</span></div><span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> <code>write()</code> aur <code>unlink()</code> directly multi-record pe kaam karte hain. <code>create()</code> list of dicts se multiple bana sakta hai.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+<pre><code><span class="cm"># ── Update all draft orders ──</span>
+<span class="sf">drafts</span> = <span class="sf">self</span>.env[<span class="st">'sale.order'</span>].<span class="fn">search</span>([(<span class="st">'state'</span>,<span class="op">=</span>,<span class="st">'draft'</span>)])
+drafts.<span class="fn">write</span>({<span class="st">'note'</span>: <span class="st">'Auto-reminder sent'</span>})
+
+<span class="cm"># ── Delete all inactive partners ──</span>
+<span class="sf">inactive</span> = <span class="sf">self</span>.env[<span class="st">'res.partner'</span>].<span class="fn">search</span>([(<span class="st">'active'</span>,<span class="op">=</span>,<span class="kw">False</span>)])
+inactive.<span class="fn">unlink</span>()</code></pre></div></div>
+        </div>
+    </div>
+
+    <h2>📝 CRUD Cheat Sheet</h2>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Cheat Sheet</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+<pre><code>Model.<span class="fn">create</span>({<span class="st">'name'</span>: <span class="st">'X'</span>})        <span class="cm"># Create</span>
+rec.<span class="fn">write</span>({<span class="st">'name'</span>: <span class="st">'Y'</span>})                <span class="cm"># Update</span>
+rec.<span class="fn">read</span>([<span class="st">'name'</span>])                      <span class="cm"># Read</span>
+rec.<span class="fn">unlink</span>()                            <span class="cm"># Delete</span>
+rec.<span class="fn">copy</span>({<span class="st">'field'</span>: val})               <span class="cm"># Duplicate</span></code></pre></div></div>
+
+    <div class="nav-bottom">
+        <a href="dev-recordsets.html">← Previous: Recordsets</a>
+        <a href="dev-computed.html">Next: Computed Fields →</a>
+    </div>
+</div>
+<footer class="footer">
+    <div class="footer-content"><div class="footer-brand"><div class="footer-logo">🟣 Odoo Mastery</div><p>CRUD — the basics of basics.</p></div><div class="footer-col"><h4>Navigate</h4><a href="../index.html">Home</a><a href="../main/developer.html">Developer</a><a href="../main/functional.html">Functional</a></div></div>
+    <div class="footer-bottom">© 2025 Odoo Mastery</div>
+</footer>
+<script>
+window.addEventListener('scroll',()=>{document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>20)});
+function expandAll(){document.querySelectorAll('.method-card').forEach(c=>c.classList.add('open'))}
+function collapseAll(){document.querySelectorAll('.method-card').forEach(c=>c.classList.remove('open'))}
+function copyCode(b){const c=b.closest('.code-block').querySelector('pre code').textContent;navigator.clipboard.writeText(c).then(()=>{b.textContent='✅ Copied!';setTimeout(()=>b.textContent='📋 Copy',2000)})}
+document.querySelectorAll('.toc-grid a').forEach(l=>{l.addEventListener('click',e=>{e.preventDefault();const t=document.querySelector(l.getAttribute('href'));if(t){t.classList.add('open');t.scrollIntoView({behavior:'smooth',block:'center'})}})});
+</script>
+</body>
+</html>
