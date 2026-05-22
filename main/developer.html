@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Developer Track — Odoo Mastery</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon">O</div>
+        Odoo Mastery
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="./main/developer.html" class="active">Developer</a></li>
+        <li><a href="./main/functional.html">Functional</a></li>
+      </ul>
+    </nav>
+
+    <!-- BREADCRUMB -->
+    <div class="breadcrumb-bar">
+      <div class="breadcrumb">
+        <a href="index.html">🏠 Home</a>
+        <span class="sep">›</span>
+        <span class="current">Developer Track</span>
+      </div>
+    </div>
+
+    <!-- PAGE HERO -->
+    <div class="page-hero">
+      <h1>⚡ Developer Track</h1>
+      <p>
+        Master Odoo development from basics to advanced — structured, practical,
+        and complete.
+      </p>
+    </div>
+
+    <!-- TOPICS -->
+    <section class="section">
+      <!-- ── FUNDAMENTALS ─────────────────────────────────── -->
+      <div class="category-section">
+        <div class="category-header">
+          <span class="cat-icon">🧱</span>
+          <h2>Fundamentals</h2>
+          <span class="count">6 topics</span>
+        </div>
+        <div class="topics-grid">
+          <a href="../../pages/dev-orm.html" class="topic-card">
+            <span class="topic-number">01</span>
+            <div class="topic-icon icon-purple">🔧</div>
+            <h3>ORM (Object Relational Mapping)</h3>
+            <p>
+              Models, fields, field types, relational fields, and how Odoo maps
+              Python classes to database tables.
+            </p>
+            <span class="difficulty beginner">● Beginner</span>
+          </a>
+
+          <a href="../pages/dev-environment.html" class="topic-card">
+            <span class="topic-number">02</span>
+            <div class="topic-icon icon-teal">🌐</div>
+            <h3>Environment (self.env)</h3>
+            <p>
+              Understanding the Odoo environment — cr, uid, context, ref(), and
+              how everything connects.
+            </p>
+            <span class="difficulty beginner">● Beginner</span>
+          </a>
+
+          <a href="../pages/dev-recordsets.html" class="topic-card">
+            <span class="topic-number">03</span>
+            <div class="topic-icon icon-blue">📦</div>
+            <h3>Recordsets</h3>
+            <p>
+              Iterating, filtering, mapping, sorted, slicing, and working with
+              multi-record sets.
+            </p>
+            <span class="difficulty beginner">● Beginner</span>
+          </a>
+
+          <a href="../pages/dev-crud.html" class="topic-card">
+            <span class="topic-number">04</span>
+            <div class="topic-icon icon-green">✏️</div>
+            <h3>CRUD Operations</h3>
+            <p>
+              create(), write(), search(), browse(), unlink(), read(), and
+              search_read() in depth.
+            </p>
+            <span class="difficulty beginner">● Beginner</span>
+          </a>
+
+          <a href="../pages/dev-computed.html" class="topic-card">
+            <span class="topic-number">05</span>
+            <div class="topic-icon icon-orange">🔄</div>
+            <h3>Computed Fields</h3>
+            <p>
+              @api.depends, compute methods, inverse methods, store=True, and
+              reactive field design.
+            </p>
+            <span class="difficulty beginner">● Beginner</span>
+          </a>
+
+          <a href="../pages/dev-onchange.html" class="topic-card">
+            <span class="topic-number">06</span>
+            <div class="topic-icon icon-pink">⚡</div>
+            <h3>Onchange</h3>
+            <p>
+              @api.onchange, dynamic UI updates, virtual records, and onchange
+              vs computed fields.
+            </p>
+            <span class="difficulty beginner">● Beginner</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- ── DATA & SECURITY ──────────────────────────────── -->
+      <div class="category-section">
+        <div class="category-header">
+          <span class="cat-icon">🔒</span>
+          <h2>Data & Security</h2>
+          <span class="count">7 topics</span>
+        </div>
+        <div class="topics-grid">
+          <a href="../pages/dev-constraints.html" class="topic-card">
+            <span class="topic-number">07</span>
+            <div class="topic-icon icon-red">🚫</div>
+            <h3>Constraints</h3>
+            <p>
+              Python constraints (@api.constrains), SQL constraints, and
+              validation patterns.
+            </p>
+            <span class="difficulty intermediate">● Intermediate</span>
+          </a>
+
+          <a href="../pages/dev-domains.html" class="topic-card">
+            <span class="topic-number">08</span>
+            <div class="topic-icon icon-indigo">🎯</div>
+            <h3>Domains</h3>
+            <p>
+              Domain syntax, operators, combining with &/|, dynamic domains, and
+              domain in views.
+            </p>
+            <span class="difficulty intermediate">● Intermediate</span>
+          </a>
+
+          <a href="../pages/dev-context.html" class="topic-card">
+            <span class="topic-number">09</span>
+            <div class="topic-icon icon-teal">📋</div>
+            <h3>Context</h3>
+            <p>
+              Passing data via context, default values, with_context(), and
+              context-driven behavior.
+            </p>
+            <span class="difficulty intermediate">● Intermediate</span>
+          </a>
+
+          <a href="../pages/dev-sudo.html" class="topic-card">
+            <span class="topic-number">10</span>
+            <div class="topic-icon icon-orange">🛡️</div>
+            <h3>Sudo & Security</h3>
+            <p>
+              sudo(), with_user(), access rights, record rules,
+              ir.model.access.csv, and groups.
+            </p>
+            <span class="difficulty intermediate">● Intermediate</span>
+          </a>
+
+          <a href="../pages/dev-access.html" class="topic-card">
+            <span class="topic-number">11</span>
+            <div class="topic-icon icon-green">🔑</div>
+            <h3>Access Rights & Rules</h3>
+            <p>
+              CSV-based access, record rules, group hierarchy, and multi-company
+              security.
+            </p>
+            <span class="difficulty intermediate">● Intermediate</span>
+          </a>
+
+          <a href="../pages/dev-xmlid.html" class="topic-card">
+            <span class="topic-number">12</span>
+            <div class="topic-icon icon-blue">🏷️</div>
+            <h3>XML IDs & ir.model.data</h3>
+            <p>
+              External identifiers, ref(), data files, noupdate, and data
+              migration patterns.
+            </p>
+            <span class="difficulty intermediate">● Intermediate</span>
+          </a>
+
+          <a href="../pages/dev-data-files.html" class="topic-card">
+            <span class="topic-number">13</span>
+            <div class="topic-icon icon-purple">📁</div>
+            <h3>Data Files & Demo Data</h3>
+            <p>
+              XML data files, CSV imports, demo data, noupdate="1", and seed
+              data patterns.
+            </p>
+            <span class="difficulty beginner">● Beginner</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- ── VIEWS & UI ───────────────────────────────────── -->
+      <div class="category-section">
+        <div class="category-header">
+          <span class="cat-icon">🎨</span>
+          <h2>Views & UI</h2>
+          <span class="count">4 topics</span>
+        </div>
+        <div class="topics-grid">
+          <a href="../pages/dev-inheritance.html" class="topic-card">
+            <span class="topic-number">14</span>
+            <div class="topic-icon icon-purple">🧬</div>
+            <h3>Model Inheritance</h3>
+            <p>
+              _inherit, _inherits, delegation, abstract models, and mixin
+              patterns.
+            </p>
+            <span class="difficulty intermediate">● Intermediate</span>
+          </a>
+
+          <a href="../pages/dev-view-inherit.html" class="topic-card">
+            <span class="topic-number">15</span>
+            <div class="topic-icon icon-teal">🪟</div>
+            <h3>View Inheritance</h3>
+            <p>
+              XPath expressions, position attributes, extending
+              forms/lists/kanban from other modules.
+            </p>
+            <span class="difficulty intermediate">● Intermediate</span>
+          </a>
+
+          <a href="../pages/dev-views.html" class="topic-card">
+            <span class="topic-number">16</span>
+            <div class="topic-icon icon-blue">📐</div>
+            <h3>Views Deep Dive</h3>
+            <p>
+              Form, list, kanban, search, calendar, pivot, graph, gantt, and
+              activity views.
+            </p>
+            <span class="difficulty intermediate">● Intermediate</span>
+          </a>
+
+          <a href="../pages/dev-widgets.html" class="topic-card">
+            <span class="topic-number">17</span>
+            <div class="topic-icon icon-pink">🎛️</div>
+            <h3>Widgets & JS</h3>
+            <p>
+              OWL components, field widgets, client actions, and frontend
+              JavaScript.
+            </p>
+            <span class="difficulty advanced">● Advanced</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- ── ADVANCED ─────────────────────────────────────── -->
+      <div class="category-section">
+        <div class="category-header">
+          <span class="cat-icon">🚀</span>
+          <h2>Advanced Topics</h2>
+          <span class="count">8 topics</span>
+        </div>
+        <div class="topics-grid">
+          <a href="../pages/dev-controllers.html" class="topic-card">
+            <span class="topic-number">18</span>
+            <div class="topic-icon icon-indigo">🌍</div>
+            <h3>Controllers & Routes</h3>
+            <p>
+              HTTP controllers, JSON-RPC, route decorators, auth modes, and
+              REST-like APIs.
+            </p>
+            <span class="difficulty advanced">● Advanced</span>
+          </a>
+
+          <a href="../pages/dev-qweb.html" class="topic-card">
+            <span class="topic-number">19</span>
+            <div class="topic-icon icon-green">📝</div>
+            <h3>QWeb Templates</h3>
+            <p>
+              t-if, t-foreach, t-esc, t-raw, t-call, template inheritance, and
+              website templates.
+            </p>
+            <span class="difficulty intermediate">● Intermediate</span>
+          </a>
+
+          <a href="../pages/dev-reports.html" class="topic-card">
+            <span class="topic-number">20</span>
+            <div class="topic-icon icon-orange">🖨️</div>
+            <h3>Report Engine</h3>
+            <p>
+              PDF reports, QWeb reports, custom paper formats, report actions,
+              and wkhtmltopdf.
+            </p>
+            <span class="difficulty advanced">● Advanced</span>
+          </a>
+
+          <a href="../pages/dev-cron.html" class="topic-card">
+            <span class="topic-number">21</span>
+            <div class="topic-icon icon-yellow">⏰</div>
+            <h3>Cron Jobs</h3>
+            <p>
+              Scheduled actions, ir.cron, interval types, and background
+              automation.
+            </p>
+            <span class="difficulty intermediate">● Intermediate</span>
+          </a>
+
+          <a href="../pages/dev-mail-thread.html" class="topic-card">
+            <span class="topic-number">22</span>
+            <div class="topic-icon icon-blue">💬</div>
+            <h3>mail.thread & Chatter</h3>
+            <p>
+              Message tracking, followers, activity scheduling, mail templates,
+              and notifications.
+            </p>
+            <span class="difficulty intermediate">● Intermediate</span>
+          </a>
+
+          <a href="../pages/dev-bus.html" class="topic-card">
+            <span class="topic-number">23</span>
+            <div class="topic-icon icon-red">📡</div>
+            <h3>Bus Notifications</h3>
+            <p>
+              Real-time messaging, bus.bus, longpolling, and push notifications
+              to browser.
+            </p>
+            <span class="difficulty advanced">● Advanced</span>
+          </a>
+
+          <a href="../pages/dev-portal.html" class="topic-card">
+            <span class="topic-number">24</span>
+            <div class="topic-icon icon-teal">🌐</div>
+            <h3>Portal & Website</h3>
+            <p>
+              Portal controllers, access tokens, website ../pages, snippets, and
+              public routes.
+            </p>
+            <span class="difficulty advanced">● Advanced</span>
+          </a>
+
+          <a href="../pages/dev-testing.html" class="topic-card">
+            <span class="topic-number">25</span>
+            <div class="topic-icon icon-purple">🧪</div>
+            <h3>Testing</h3>
+            <p>
+              TransactionCase, HttpCase, tagged tests, test data, and CI/CD
+              integration.
+            </p>
+            <span class="difficulty advanced">● Advanced</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="footer-logo">🟣 Odoo Mastery</div>
+          <p>
+            Structured learning for Odoo developers and functional consultants.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigate</h4>
+          <a href="index.html">Home</a>
+          <a href="./main/developer.html">Developer Track</a>
+          <a href="./main/functional.html">Functional Track</a>
+        </div>
+        <div class="footer-col">
+          <h4>Resources</h4>
+          <a href="https://www.odoo.com/documentation/18.0/" target="_blank"
+            >Odoo Docs</a
+          >
+          <a href="https://github.com/odoo/odoo" target="_blank">GitHub</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        © 2025 Odoo Mastery. Built for learners, by learners.
+      </div>
+    </footer>
+
+    <script>
+      window.addEventListener("scroll", () => {
+        document
+          .getElementById("navbar")
+          .classList.toggle("scrolled", window.scrollY > 20);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORM Complete Guide — Odoo Mastery</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+        .content-wrapper {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 40px 40px 80px;
+        }
+        .content-wrapper h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 36px 0 10px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .content-wrapper h3 {
+            font-size: 17px;
+            font-weight: 600;
+            margin: 18px 0 6px;
+            color: var(--primary);
+        }
+        .content-wrapper p, .content-wrapper li {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-light);
+        }
+        .content-wrapper ul { margin: 8px 0 16px 20px; }
+        .content-wrapper li { margin-bottom: 4px; }
+
+        /* ── Code Block (VS Code style) ─────────────── */
+        .code-block {
+            background: #1e1e2e;
+            border-radius: 10px;
+            margin: 12px 0 16px;
+            border: 1px solid #313244;
+            overflow: hidden;
+        }
+        .code-block .code-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 7px 16px;
+            background: #181825;
+            border-bottom: 1px solid #313244;
+        }
+        .code-block .dots { display: flex; gap: 6px; }
+        .code-block .dots span { width: 10px; height: 10px; border-radius: 50%; }
+        .code-block .dots span:nth-child(1) { background: #f38ba8; }
+        .code-block .dots span:nth-child(2) { background: #f9e2af; }
+        .code-block .dots span:nth-child(3) { background: #a6e3a1; }
+        .code-block .lang-label {
+            font-size: 10px; color: #6c7086; text-transform: uppercase;
+            letter-spacing: 1.5px; font-weight: 600;
+        }
+        .code-block .copy-btn {
+            background: transparent; border: 1px solid #45475a; color: #6c7086;
+            padding: 3px 10px; border-radius: 5px; font-size: 10px; cursor: pointer;
+            font-family: inherit; transition: all 0.2s;
+        }
+        .code-block .copy-btn:hover { background: #313244; color: #cdd6f4; }
+        .code-block .code-body { display: flex; overflow-x: auto; }
+        .code-block .line-numbers {
+            padding: 12px 0; text-align: right; user-select: none;
+            border-right: 1px solid #313244; background: #181825;
+            min-width: 40px; flex-shrink: 0;
+        }
+        .code-block .line-numbers span {
+            display: block; padding: 0 10px; font-size: 11px;
+            line-height: 1.65; color: #45475a;
+            font-family: 'JetBrains Mono', 'Consolas', monospace;
+        }
+        .code-block pre {
+            margin: 0; padding: 12px 18px; flex: 1; overflow-x: auto;
+            white-space: pre; tab-size: 4;
+        }
+        .code-block pre code {
+            font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+            font-size: 12.5px; line-height: 1.65; color: #cdd6f4;
+            background: none; padding: 0; white-space: pre;
+        }
+        .cm { color: #6c7086; font-style: italic; }
+        .kw { color: #cba6f7; }
+        .st { color: #a6e3a1; }
+        .fn { color: #89b4fa; }
+        .cl { color: #f9e2af; }
+        .nu { color: #fab387; }
+        .op { color: #89dceb; }
+        .bi { color: #f5c2e7; }
+        .dc { color: #94e2d5; }
+        .sf { color: #f5c2e7; }
+
+        /* ── Method Card ────────────────────────────── */
+        .method-card {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 12px; margin: 14px 0; overflow: hidden;
+            transition: var(--transition);
+        }
+        .method-card:hover { box-shadow: var(--shadow-md); border-color: rgba(113,75,103,0.2); }
+        .method-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 18px; cursor: pointer; user-select: none; gap: 12px;
+        }
+        .method-header:hover { background: rgba(113,75,103,0.02); }
+        .method-title-group { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; }
+        .method-icon {
+            width: 38px; height: 38px; border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 17px; flex-shrink: 0;
+        }
+        .method-name {
+            font-family: 'JetBrains Mono', monospace; font-size: 15px;
+            font-weight: 700; color: var(--text);
+        }
+        .method-one-liner { font-size: 12px; color: var(--text-light); margin-top: 1px; }
+        .method-badges { display: flex; gap: 6px; flex-shrink: 0; }
+        .badge {
+            padding: 3px 8px; border-radius: 5px; font-size: 10px;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .badge-read { background: #E8F8F5; color: #00A09D; }
+        .badge-write { background: #FFF3E0; color: #E67E22; }
+        .badge-delete { background: #FCE4EC; color: #E74C3C; }
+        .badge-search { background: #E8EAF6; color: #5C6BC0; }
+        .badge-util { background: #F3E5F5; color: #8E24AA; }
+        .badge-record { background: #E0F2F1; color: #00897B; }
+        .badge-decorator { background: #FFF8E1; color: #F9A825; }
+        .badge-env { background: #E3F2FD; color: #1E88E5; }
+        .method-toggle {
+            font-size: 16px; color: var(--text-muted);
+            transition: transform 0.3s ease; flex-shrink: 0;
+        }
+        .method-card.open .method-toggle { transform: rotate(180deg); }
+        .method-body {
+            display: none; padding: 4px 18px 18px; border-top: 1px solid var(--border);
+        }
+        .method-card.open .method-body { display: block; }
+
+        /* ── Info Boxes (tight) ─────────────────────── */
+        .hinglish-note {
+            background: linear-gradient(135deg, #FFF8E1, #FFF3E0);
+            border-left: 3px solid #FFB300; padding: 10px 14px;
+            border-radius: 0 8px 8px 0; margin: 10px 0; font-size: 13px; line-height: 1.6;
+        }
+        .hinglish-note strong { color: #E65100; }
+        .reallife-box {
+            background: linear-gradient(135deg, #E8F5E9, #E0F2F1);
+            border-left: 3px solid #43A047; padding: 10px 14px;
+            border-radius: 0 8px 8px 0; margin: 10px 0; font-size: 13px;
+        }
+        .reallife-box strong { color: #2E7D32; }
+        .info-box {
+            background: rgba(0,160,157,0.06); border-left: 3px solid var(--accent);
+            padding: 10px 14px; border-radius: 0 8px 8px 0;
+            margin: 10px 0; font-size: 13px;
+        }
+        .info-box strong { color: var(--accent); }
+        .warning-box {
+            background: rgba(231,76,60,0.06); border-left: 3px solid #E74C3C;
+            padding: 10px 14px; border-radius: 0 8px 8px 0;
+            margin: 10px 0; font-size: 13px;
+        }
+        .warning-box strong { color: #E74C3C; }
+        .syntax-box {
+            background: #f0f1f3; border: 1px solid var(--border); border-radius: 8px;
+            padding: 10px 16px; margin: 8px 0;
+            font-family: 'JetBrains Mono', monospace; font-size: 13px;
+            color: var(--primary-dark); white-space: pre; overflow-x: auto;
+        }
+        .returns-table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 13px; }
+        .returns-table th {
+            background: var(--bg); padding: 8px 12px; text-align: left;
+            font-weight: 600; font-size: 11px; text-transform: uppercase;
+            letter-spacing: 0.5px; color: var(--text-muted); border-bottom: 2px solid var(--border);
+        }
+        .returns-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--text-light); }
+        .returns-table code {
+            background: #f0f0f0; padding: 2px 6px; border-radius: 4px;
+            font-size: 12px; color: var(--primary);
+        }
+
+        /* ── TOC ────────────────────────────────────── */
+        .toc {
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 14px; padding: 20px 24px; margin: 20px 0;
+        }
+        .toc h3 { margin: 0 0 12px; font-size: 16px; color: var(--text); }
+        .toc-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 4px;
+        }
+        .toc-grid a {
+            display: flex; align-items: center; gap: 6px; padding: 5px 10px;
+            border-radius: 6px; font-size: 12px;
+            font-family: 'JetBrains Mono', monospace; color: var(--text-light);
+            transition: var(--transition);
+        }
+        .toc-grid a:hover { background: rgba(113,75,103,0.06); color: var(--primary); }
+        .toc-grid .toc-num {
+            width: 22px; height: 22px; background: var(--bg); border-radius: 5px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 9px; font-weight: 700; color: var(--text-muted); flex-shrink: 0;
+        }
+
+        /* ── Section Divider ────────────────────────── */
+        .section-divider {
+            display: flex; align-items: center; gap: 12px; margin: 36px 0 6px;
+        }
+        .section-divider .divider-icon {
+            width: 42px; height: 42px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center; font-size: 20px;
+        }
+        .section-divider .divider-text h2 { margin: 0; border: none; padding: 0; font-size: 20px; }
+        .section-divider .divider-text p { font-size: 13px; margin: 0; }
+
+        .expand-controls { display: flex; gap: 10px; margin: 14px 0; }
+        .expand-btn {
+            padding: 6px 14px; border-radius: 6px; border: 1px solid var(--border);
+            background: white; cursor: pointer; font-size: 12px; font-weight: 500;
+            color: var(--text-light); font-family: inherit; transition: var(--transition);
+        }
+        .expand-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+        .nav-bottom {
+            display: flex; justify-content: space-between; margin-top: 48px;
+            padding-top: 24px; border-top: 2px solid var(--border);
+        }
+        .nav-bottom a {
+            display: flex; align-items: center; gap: 8px; padding: 10px 20px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 10px; font-weight: 600; font-size: 13px; transition: var(--transition);
+        }
+        .nav-bottom a:hover { border-color: var(--primary); color: var(--primary); box-shadow: var(--shadow-md); }
+
+        @media (max-width: 768px) {
+            .content-wrapper { padding: 24px 16px 60px; }
+            .method-header { flex-wrap: wrap; }
+            .method-badges { order: 3; width: 100%; margin-top: 6px; }
+            .toc-grid { grid-template-columns: 1fr 1fr; }
+            .code-block .line-numbers { display: none; }
+            .code-block pre { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar">
+    <a href="../index.html" class="nav-logo">
+        <div class="logo-icon">O</div>
+        Odoo Mastery
+    </a>
+    <ul class="nav-links">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../main/developer.html" class="active">Developer</a></li>
+        <li><a href="../main/functional.html">Functional</a></li>
+    </ul>
+</nav>
+
+<div class="breadcrumb-bar">
+    <div class="breadcrumb">
+        <a href="../index.html">🏠 Home</a>
+        <span class="sep">›</span>
+        <a href="../main/developer.html">Developer</a>
+        <span class="sep">›</span>
+        <span class="current">ORM — Complete Guide</span>
+    </div>
+</div>
+
+<div class="page-hero" style="padding: 40px 40px;">
+    <h1>🔧 ORM — Every Method Explained</h1>
+    <p>Har ek ORM method — real-life examples, syntax, aur Hinglish mein samjhaya</p>
+</div>
+
+<div class="content-wrapper">
+
+    <h2>📖 What is the ORM?</h2>
+    <p>
+        Odoo ka ORM Python classes ko PostgreSQL tables mein convert karta hai.
+        Sirf Python likho — SQL ki zarurat nahi. Har model = table, har field = column.
+    </p>
+    <div class="info-box">
+        <strong>💡 Rule:</strong> Odoo mein sab data operations — create, read, update, delete — ORM se hote hain. Direct SQL avoid karo.
+    </div>
+
+    <!-- TOC -->
+    <div class="toc">
+        <h3>📑 All 42 Methods</h3>
+        <div class="toc-grid">
+            <a href="#create"><span class="toc-num">1</span>create()</a>
+            <a href="#write"><span class="toc-num">2</span>write()</a>
+            <a href="#read"><span class="toc-num">3</span>read()</a>
+            <a href="#unlink"><span class="toc-num">4</span>unlink()</a>
+            <a href="#search"><span class="toc-num">5</span>search()</a>
+            <a href="#search_read"><span class="toc-num">6</span>search_read()</a>
+            <a href="#search_count"><span class="toc-num">7</span>search_count()</a>
+            <a href="#browse"><span class="toc-num">8</span>browse()</a>
+            <a href="#exists"><span class="toc-num">9</span>exists()</a>
+            <a href="#ensure_one"><span class="toc-num">10</span>ensure_one()</a>
+            <a href="#filtered"><span class="toc-num">11</span>filtered()</a>
+            <a href="#mapped"><span class="toc-num">12</span>mapped()</a>
+            <a href="#sorted"><span class="toc-num">13</span>sorted()</a>
+            <a href="#copy"><span class="toc-num">14</span>copy()</a>
+            <a href="#name_get"><span class="toc-num">15</span>display_name</a>
+            <a href="#name_search"><span class="toc-num">16</span>name_search()</a>
+            <a href="#name_create"><span class="toc-num">17</span>name_create()</a>
+            <a href="#default_get"><span class="toc-num">18</span>default_get()</a>
+            <a href="#fields_get"><span class="toc-num">19</span>fields_get()</a>
+            <a href="#read_group"><span class="toc-num">20</span>read_group()</a>
+            <a href="#with_context"><span class="toc-num">21</span>with_context()</a>
+            <a href="#with_user"><span class="toc-num">22</span>with_user()</a>
+            <a href="#with_company"><span class="toc-num">23</span>with_company()</a>
+            <a href="#sudo"><span class="toc-num">24</span>sudo()</a>
+            <a href="#ref"><span class="toc-num">25</span>env.ref()</a>
+            <a href="#flush"><span class="toc-num">26</span>flush_model()</a>
+            <a href="#invalidate"><span class="toc-num">27</span>invalidate_model()</a>
+            <a href="#onchange"><span class="toc-num">28</span>@api.onchange</a>
+            <a href="#depends"><span class="toc-num">29</span>@api.depends</a>
+            <a href="#constrains"><span class="toc-num">30</span>@api.constrains</a>
+            <a href="#model_dec"><span class="toc-num">31</span>@api.model</a>
+            <a href="#returns_dec"><span class="toc-num">32</span>@api.returns</a>
+            <a href="#autovacuum"><span class="toc-num">33</span>@api.autovacuum</a>
+            <a href="#union"><span class="toc-num">34</span>Union |</a>
+            <a href="#intersect"><span class="toc-num">35</span>Intersect &amp;</a>
+            <a href="#subtract"><span class="toc-num">36</span>Subtract -</a>
+            <a href="#ids"><span class="toc-num">37</span>.ids / .id</a>
+            <a href="#env_access"><span class="toc-num">38</span>self.env[]</a>
+            <a href="#new"><span class="toc-num">39</span>new()</a>
+            <a href="#search_fetch"><span class="toc-num">40</span>search_fetch()</a>
+            <a href="#fetch"><span class="toc-num">41</span>fetch()</a>
+            <a href="#web_read"><span class="toc-num">42</span>web_read()</a>
+        </div>
+    </div>
+
+    <div class="expand-controls">
+        <button class="expand-btn" onclick="expandAll()">📂 Expand All</button>
+        <button class="expand-btn" onclick="collapseAll()">📁 Collapse All</button>
+    </div>
+
+    <!-- ═══════════════════════ SECTION 1: CRUD ═══════════════════════ -->
+    <div class="section-divider">
+        <div class="divider-icon" style="background:rgba(39,174,96,0.1);color:#27AE60;">✏️</div>
+        <div class="divider-text">
+            <h2>CRUD Operations</h2>
+            <p>Create, Read, Update, Delete — the fundamentals</p>
+        </div>
+    </div>
+
+    <!-- 1. create() -->
+    <div class="method-card" id="create">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-green">✨</div>
+                <div>
+                    <div class="method-name">.create(vals)</div>
+                    <div class="method-one-liner">Naya record banata hai database mein</div>
+                </div>
+            </div>
+            <div class="method-badges"><span class="badge badge-write">WRITE</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note">
+                <strong>🗣️ Hinglish:</strong> Naya customer, order, product banana ho toh <code>create()</code> use kar. Dictionary de with field-value pairs. Odoo record bana ke return karega.
+            </div>
+            <div class="syntax-box">record = self.env['model.name'].create({'field': value})</div>
+            <table class="returns-table">
+                <tr><th>Param</th><th>Type</th><th>Description</th></tr>
+                <tr><td><code>vals</code></td><td>dict / list[dict]</td><td>Field-value pairs</td></tr>
+            </table>
+
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+<pre><code><span class="cm"># ── Single record create ──</span>
+<span class="sf">partner</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">create</span>({
+    <span class="st">'name'</span>: <span class="st">'Rahul Sharma'</span>,
+    <span class="st">'email'</span>: <span class="st">'rahul@example.com'</span>,
+    <span class="st">'phone'</span>: <span class="st">'9876543210'</span>,
+    <span class="st">'is_company'</span>: <span class="kw">False</span>,
+})
+<span class="fn">print</span>(partner.id)  <span class="cm"># → 42</span></code></pre></div></div>
+
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div>
+<pre><code><span class="cm"># ── Multiple records (list of dicts) ──</span>
+<span class="sf">products</span> = self.env[<span class="st">'product.product'</span>].<span class="fn">create</span>([
+    {<span class="st">'name'</span>: <span class="st">'Laptop'</span>,   <span class="st">'list_price'</span>: <span class="nu">50000</span>},
+    {<span class="st">'name'</span>: <span class="st">'Mouse'</span>,    <span class="st">'list_price'</span>: <span class="nu">500</span>},
+    {<span class="st">'name'</span>: <span class="st">'Keyboard'</span>, <span class="st">'list_price'</span>: <span class="nu">1500</span>},
+])</code></pre></div></div>
+
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+<pre><code><span class="cm"># ── Create with One2many lines ──</span>
+<span class="sf">order</span> = self.env[<span class="st">'sale.order'</span>].<span class="fn">create</span>({
+    <span class="st">'partner_id'</span>: partner.id,
+    <span class="st">'order_line'</span>: [
+        (<span class="nu">0</span>, <span class="nu">0</span>, {<span class="st">'product_id'</span>: <span class="nu">1</span>, <span class="st">'product_uom_qty'</span>: <span class="nu">5</span>}),
+        (<span class="nu">0</span>, <span class="nu">0</span>, {<span class="st">'product_id'</span>: <span class="nu">2</span>, <span class="st">'product_uom_qty'</span>: <span class="nu">10</span>}),
+    ]
+})</code></pre></div></div>
+
+            <div class="reallife-box"><strong>🏢 Real-life:</strong> Website signup → <code>res.partner.create()</code>. SO confirm → <code>stock.picking.create()</code>.</div>
+            <div class="warning-box">
+                <strong>⚠️ One2many Tuples:</strong><br>
+                <code>(0, 0, {vals})</code> Create new &nbsp;|&nbsp; <code>(1, id, {vals})</code> Update &nbsp;|&nbsp; <code>(2, id, 0)</code> Delete<br>
+                <code>(4, id, 0)</code> Link &nbsp;|&nbsp; <code>(3, id, 0)</code> Unlink &nbsp;|&nbsp; <code>(6, 0, [ids])</code> Replace all
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. write() -->
+    <div class="method-card" id="write">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-orange">📝</div>
+                <div><div class="method-name">.write(vals)</div><div class="method-one-liner">Existing record(s) update karta hai</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-write">WRITE</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Record mein kuch change karna — name, price, status — toh <code>write()</code> use kar. Multiple records pe ek saath bhi kaam karta hai.</div>
+            <div class="syntax-box">recordset.write({'field': new_value})</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span></div>
+<pre><code><span class="cm"># ── Update single record ──</span>
+<span class="sf">partner</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">browse</span>(<span class="nu">42</span>)
+partner.<span class="fn">write</span>({
+    <span class="st">'name'</span>: <span class="st">'Rahul Kumar Sharma'</span>,
+    <span class="st">'phone'</span>: <span class="st">'9999988888'</span>,
+})
+
+<span class="cm"># ── Update multiple at once ──</span>
+<span class="sf">partners</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">search</span>([
+    (<span class="st">'country_id.code'</span>, <span class="op">=</span>, <span class="st">'IN'</span>)
+])
+partners.<span class="fn">write</span>({<span class="st">'lang'</span>: <span class="st">'hi_IN'</span>})
+<span class="cm"># ↑ Sab Indian partners ek saath update!</span></code></pre></div></div>
+            <div class="info-box"><strong>💡 Shortcut:</strong> <code>partner.name = 'New'</code> internally <code>write()</code> call karta hai.</div>
+        </div>
+    </div>
+
+    <!-- 3. read() -->
+    <div class="method-card" id="read">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-blue">📖</div>
+                <div><div class="method-name">.read(fields)</div><div class="method-one-liner">Data dictionary format mein return karta hai</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-read">READ</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Record ka data dict mein chahiye — API response ya debugging ke liye — toh <code>read()</code> use kar. List of dicts return karta hai.</div>
+            <div class="syntax-box">data = recordset.read(['field1', 'field2'])</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></div>
+<pre><code><span class="sf">partner</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">browse</span>(<span class="nu">42</span>)
+
+<span class="cm"># ── Specific fields ──</span>
+<span class="sf">data</span> = partner.<span class="fn">read</span>([<span class="st">'name'</span>, <span class="st">'email'</span>, <span class="st">'phone'</span>])
+<span class="cm"># → [{'id': 42, 'name': 'Rahul', 'email': '...'}]</span>
+
+<span class="cm"># ── All fields ──</span>
+<span class="sf">all_data</span> = partner.<span class="fn">read</span>([])
+<span class="cm"># → [{...all fields...}]</span></code></pre></div></div>
+            <div class="info-box"><strong>💡</strong> Normal code mein <code>partner.name</code> direct access zyada clean hai. <code>read()</code> mainly RPC/API mein use hota hai.</div>
+        </div>
+    </div>
+
+    <!-- 4. unlink() -->
+    <div class="method-card" id="unlink">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-red">🗑️</div>
+                <div><div class="method-name">.unlink()</div><div class="method-one-liner">Record permanently delete karta hai</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-delete">DELETE</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Record pura delete karna hai? <code>unlink()</code>. Wapas nahi aayega — sambhal ke!</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+<pre><code><span class="cm"># ── Delete single ──</span>
+<span class="sf">partner</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">browse</span>(<span class="nu">42</span>)
+partner.<span class="fn">unlink</span>()
+
+<span class="cm"># ── Delete multiple ──</span>
+<span class="sf">drafts</span> = self.env[<span class="st">'sale.order'</span>].<span class="fn">search</span>([
+    (<span class="st">'state'</span>, <span class="op">=</span>, <span class="st">'draft'</span>)
+])
+drafts.<span class="fn">unlink</span>()</code></pre></div></div>
+            <div class="warning-box"><strong>⚠️</strong> Confirmed orders, posted invoices delete nahi hote — pehle cancel karo.</div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════ SECTION 2: SEARCH ═══════════════════════ -->
+    <div class="section-divider">
+        <div class="divider-icon" style="background:rgba(52,152,219,0.1);color:#3498DB;">🔍</div>
+        <div class="divider-text"><h2>Search & Retrieve</h2><p>Data dhundna, filter, count karna</p></div>
+    </div>
+
+    <!-- 5. search() -->
+    <div class="method-card" id="search">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-blue">🔍</div>
+                <div><div class="method-name">.search(domain)</div><div class="method-one-liner">Domain se matching records dhundta hai</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-search">SEARCH</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> SABSE zyada use hone wala method! Domain = list of tuples = SQL WHERE clause. Recordset return karta hai.</div>
+            <div class="syntax-box">records = self.env['model'].search(domain, limit=N, offset=O, order='field ASC')</div>
+            <table class="returns-table">
+                <tr><th>Param</th><th>Type</th><th>Description</th></tr>
+                <tr><td><code>domain</code></td><td>list</td><td>Filter conditions</td></tr>
+                <tr><td><code>limit</code></td><td>int</td><td>Max records</td></tr>
+                <tr><td><code>offset</code></td><td>int</td><td>Skip first N (pagination)</td></tr>
+                <tr><td><code>order</code></td><td>str</td><td>Sort: 'name ASC, id DESC'</td></tr>
+            </table>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span></div>
+<pre><code><span class="cm"># ── Basic search ──</span>
+<span class="sf">partners</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">search</span>([
+    (<span class="st">'is_company'</span>, <span class="op">=</span>, <span class="kw">True</span>)
+])
+
+<span class="cm"># ── With limit and order ──</span>
+<span class="sf">top</span> = self.env[<span class="st">'product.product'</span>].<span class="fn">search</span>(
+    [(<span class="st">'sale_ok'</span>, <span class="op">=</span>, <span class="kw">True</span>)],
+    limit=<span class="nu">10</span>,
+    order=<span class="st">'list_price DESC'</span>
+)
+
+<span class="cm"># ── Multiple conditions (AND default) ──</span>
+<span class="sf">indian</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">search</span>([
+    (<span class="st">'is_company'</span>, <span class="op">=</span>, <span class="kw">True</span>),
+    (<span class="st">'country_id.code'</span>, <span class="op">=</span>, <span class="st">'IN'</span>),
+])
+
+<span class="cm"># ── OR condition ──</span>
+<span class="sf">gmail_or_yahoo</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">search</span>([
+    <span class="st">'|'</span>,
+    (<span class="st">'email'</span>, <span class="st">'ilike'</span>, <span class="st">'gmail.com'</span>),
+    (<span class="st">'email'</span>, <span class="st">'ilike'</span>, <span class="st">'yahoo.com'</span>),
+])</code></pre></div></div>
+            <div class="info-box"><strong>💡 Operators:</strong> <code>=</code> <code>!=</code> <code>&gt;</code> <code>&lt;</code> <code>&gt;=</code> <code>&lt;=</code> <code>like</code> <code>ilike</code> <code>in</code> <code>not in</code> <code>child_of</code> <code>parent_of</code></div>
+        </div>
+    </div>
+
+    <!-- 6. search_read() -->
+    <div class="method-card" id="search_read">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-indigo">📋</div>
+                <div><div class="method-name">.search_read(domain, fields)</div><div class="method-one-liner">search() + read() ek saath — dict list milti hai</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-search">SEARCH</span><span class="badge badge-read">READ</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Do steps ka kaam ek mein — search + dict mein data. API aur RPC mein best hai.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
+<pre><code><span class="sf">data</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">search_read</span>(
+    domain=[(<span class="st">'is_company'</span>, <span class="op">=</span>, <span class="kw">True</span>)],
+    fields=[<span class="st">'name'</span>, <span class="st">'email'</span>, <span class="st">'city'</span>],
+    limit=<span class="nu">5</span>,
+    order=<span class="st">'name ASC'</span>,
+)
+<span class="cm"># → [{'id':1, 'name':'ABC Corp', 'email':'...'}, ...]</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 7. search_count() -->
+    <div class="method-card" id="search_count">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-teal">🔢</div>
+                <div><div class="method-name">.search_count(domain)</div><div class="method-one-liner">Sirf count return karta hai — fast!</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-search">SEARCH</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Records nahi, sirf number chahiye — kitne orders pending? <code>search_count()</code> fast hai kyunki sirf SQL COUNT karta hai.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+<pre><code><span class="sf">count</span> = self.env[<span class="st">'sale.order'</span>].<span class="fn">search_count</span>([
+    (<span class="st">'state'</span>, <span class="op">=</span>, <span class="st">'draft'</span>)
+])
+
+<span class="cm"># ── Dashboard stats ──</span>
+<span class="sf">stats</span> = {
+    <span class="st">'drafts'</span>: self.env[<span class="st">'sale.order'</span>].<span class="fn">search_count</span>([(<span class="st">'state'</span>,<span class="op">=</span>,<span class="st">'draft'</span>)]),
+    <span class="st">'customers'</span>: self.env[<span class="st">'res.partner'</span>].<span class="fn">search_count</span>([(<span class="st">'customer_rank'</span>,<span class="op">&gt;</span>,<span class="nu">0</span>)]),
+}</code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 8. browse() -->
+    <div class="method-card" id="browse">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-purple">🔎</div>
+                <div><div class="method-name">.browse(ids)</div><div class="method-one-liner">ID se seedha recordset — bina search ke</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-read">READ</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> ID pehle se hai toh search ki zarurat nahi — <code>browse(42)</code> se seedha record le lo.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div>
+<pre><code><span class="cm"># ── Single ──</span>
+<span class="sf">partner</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">browse</span>(<span class="nu">42</span>)
+
+<span class="cm"># ── Multiple ──</span>
+<span class="sf">partners</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">browse</span>([<span class="nu">1</span>, <span class="nu">5</span>, <span class="nu">42</span>])
+<span class="fn">print</span>(partners.<span class="fn">mapped</span>(<span class="st">'name'</span>))</code></pre></div></div>
+            <div class="warning-box"><strong>⚠️</strong> Galat ID pe error nahi aayega turant — baad mein field access pe aayega. <code>.exists()</code> use karo.</div>
+        </div>
+    </div>
+
+    <!-- 9. exists() -->
+    <div class="method-card" id="exists">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-green">✅</div>
+                <div><div class="method-name">.exists()</div><div class="method-one-liner">Record database mein hai ya nahi — check karta hai</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-util">UTILITY</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Delete ho chuka record ka reference hai? <code>exists()</code> valid records filter karke dega.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
+<pre><code><span class="sf">rec</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">browse</span>(<span class="nu">99999</span>)
+<span class="kw">if</span> rec.<span class="fn">exists</span>():
+    <span class="fn">print</span>(rec.name)
+<span class="kw">else</span>:
+    <span class="fn">print</span>(<span class="st">"Nahi hai!"</span>)
+
+<span class="cm"># browse([1,2,99999]).exists() → only [1,2]</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 10. ensure_one() -->
+    <div class="method-card" id="ensure_one">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-red">☝️</div>
+                <div><div class="method-name">.ensure_one()</div><div class="method-one-liner">Exactly 1 record hona chahiye warna error</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-util">UTILITY</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Button handler hai jo sirf ek record pe chalna chahiye — pehle <code>ensure_one()</code> laga. Safety check!</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span></div>
+<pre><code><span class="kw">def</span> <span class="fn">action_confirm</span>(<span class="sf">self</span>):
+    <span class="sf">self</span>.<span class="fn">ensure_one</span>()  <span class="cm"># ValueError if len(self) != 1</span>
+    <span class="sf">self</span>.state = <span class="st">'confirmed'</span>
+    <span class="sf">self</span>.<span class="fn">_send_notification</span>()</code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════ SECTION 3: RECORDSET OPS ═══════════════════════ -->
+    <div class="section-divider">
+        <div class="divider-icon" style="background:rgba(113,75,103,0.1);color:#714B67;">📦</div>
+        <div class="divider-text"><h2>Recordset Operations</h2><p>Filter, map, sort — Python-style</p></div>
+    </div>
+
+    <!-- 11. filtered() -->
+    <div class="method-card" id="filtered">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-teal">🔽</div>
+                <div><div class="method-name">.filtered(func)</div><div class="method-one-liner">Python function se filter karta hai</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-record">RECORDSET</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Search ke baad Python mein aur filter? Lambda do — matching records ka naya set milega.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></div>
+<pre><code><span class="sf">partners</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">search</span>([])
+
+<span class="cm"># ── Lambda filter ──</span>
+<span class="sf">gmail</span> = partners.<span class="fn">filtered</span>(
+    <span class="kw">lambda</span> p: p.email <span class="kw">and</span> <span class="st">'gmail'</span> <span class="kw">in</span> p.email
+)
+
+<span class="cm"># ── String shortcut (boolean fields) ──</span>
+<span class="sf">companies</span> = partners.<span class="fn">filtered</span>(<span class="st">'is_company'</span>)</code></pre></div></div>
+            <div class="info-box"><strong>💡</strong> <code>search()</code> = SQL (fast). <code>filtered()</code> = Python (slow but can use computed fields).</div>
+        </div>
+    </div>
+
+    <!-- 12. mapped() -->
+    <div class="method-card" id="mapped">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-orange">🗺️</div>
+                <div><div class="method-name">.mapped(func)</div><div class="method-one-liner">Har record se value extract karta hai</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-record">RECORDSET</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Recordset se ek field ki list chahiye? <code>mapped('name')</code> → list of names. Relational field pe recordset milta hai.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span></div>
+<pre><code><span class="sf">names</span> = partners.<span class="fn">mapped</span>(<span class="st">'name'</span>)
+<span class="cm"># → ['Rahul', 'Priya', 'ABC Corp']</span>
+
+<span class="cm"># ── Dot notation for related ──</span>
+<span class="sf">countries</span> = partners.<span class="fn">mapped</span>(<span class="st">'country_id.name'</span>)
+
+<span class="cm"># ── Relational → returns recordset! ──</span>
+<span class="sf">all_countries</span> = partners.<span class="fn">mapped</span>(<span class="st">'country_id'</span>)
+
+<span class="cm"># ── Lambda ──</span>
+<span class="sf">emails</span> = partners.<span class="fn">mapped</span>(<span class="kw">lambda</span> p: (p.email <span class="kw">or</span> <span class="st">''</span>).upper())</code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 13. sorted() -->
+    <div class="method-card" id="sorted">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-pink">📊</div>
+                <div><div class="method-name">.sorted(key, reverse)</div><div class="method-one-liner">Python mein sort karta hai</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-record">RECORDSET</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+<pre><code><span class="sf">by_name</span> = partners.<span class="fn">sorted</span>(key=<span class="st">'name'</span>)
+<span class="sf">by_name_desc</span> = partners.<span class="fn">sorted</span>(key=<span class="st">'name'</span>, reverse=<span class="kw">True</span>)
+
+<span class="cm"># ── Lambda sort ──</span>
+<span class="sf">by_revenue</span> = partners.<span class="fn">sorted</span>(key=<span class="kw">lambda</span> p: p.total_invoiced, reverse=<span class="kw">True</span>)</code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 14. copy() -->
+    <div class="method-card" id="copy">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-green">📋</div>
+                <div><div class="method-name">.copy(default)</div><div class="method-one-liner">Record ka duplicate banata hai</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-write">WRITE</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div>
+<pre><code><span class="sf">new_order</span> = order.<span class="fn">copy</span>()  <span class="cm"># Simple duplicate</span>
+
+<span class="cm"># ── With overrides ──</span>
+<span class="sf">new_order</span> = order.<span class="fn">copy</span>(default={
+    <span class="st">'client_order_ref'</span>: <span class="st">'COPY-001'</span>,
+})</code></pre></div></div>
+            <div class="info-box"><strong>💡</strong> Fields with <code>copy=False</code> won't be copied (e.g., state resets to draft).</div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════ SECTION 4: NAME METHODS ═══════════════════════ -->
+    <div class="section-divider">
+        <div class="divider-icon" style="background:rgba(230,126,34,0.1);color:#E67E22;">🏷️</div>
+        <div class="divider-text"><h2>Name Methods</h2><p>Display name, name search, quick create</p></div>
+    </div>
+
+    <!-- 15. name_get / display_name -->
+    <div class="method-card" id="name_get">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-orange">🏷️</div>
+                <div><div class="method-name">_compute_display_name</div><div class="method-one-liner">Dropdown mein dikhne wala name customize karta hai</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-read">READ</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Many2one dropdown mein jo name dikhta hai woh yahan se aata hai. Odoo 18 mein <code>_compute_display_name()</code> use karo.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+<pre><code><span class="cm"># ── Odoo 18 recommended way ──</span>
+<span class="kw">def</span> <span class="fn">_compute_display_name</span>(<span class="sf">self</span>):
+    <span class="kw">for</span> rec <span class="kw">in</span> <span class="sf">self</span>:
+        rec.display_name = <span class="st">f"[</span>{rec.code}<span class="st">] </span>{rec.name}<span class="st">"</span>
+<span class="cm"># Dropdown shows: [LAP001] Laptop</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 16. name_search() -->
+    <div class="method-card" id="name_search">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-yellow">🔤</div>
+                <div><div class="method-name">_name_search()</div><div class="method-one-liner">Dropdown mein type karne pe kaise search kare — customize karo</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-search">SEARCH</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Many2one mein "9876" type karo aur phone se customer mile — yeh <code>_name_search</code> override se hota hai.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div>
+<pre><code><span class="kw">def</span> <span class="fn">_name_search</span>(<span class="sf">self</span>, name=<span class="st">''</span>, domain=<span class="kw">None</span>,
+                  operator=<span class="st">'ilike'</span>, limit=<span class="nu">100</span>, order=<span class="kw">None</span>):
+    domain = domain <span class="kw">or</span> []
+    <span class="kw">if</span> name:
+        domain = [<span class="st">'|'</span>,
+            (<span class="st">'name'</span>, operator, name),
+            (<span class="st">'phone'</span>, operator, name),
+        ] + domain
+    <span class="kw">return</span> <span class="sf">self</span>._search(domain, limit=limit, order=order)</code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 17. name_create() -->
+    <div class="method-card" id="name_create">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-green">⚡</div>
+                <div><div class="method-name">.name_create(name)</div><div class="method-one-liner">Sirf name se quick create (dropdown se)</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-write">WRITE</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span></div>
+<pre><code><span class="sf">result</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">name_create</span>(<span class="st">'Quick Customer'</span>)
+<span class="cm"># → (id, 'Quick Customer')</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════ SECTION 5: INTROSPECTION ═══════════════════════ -->
+    <div class="section-divider">
+        <div class="divider-icon" style="background:rgba(108,92,231,0.1);color:#6C5CE7;">🔬</div>
+        <div class="divider-text"><h2>Introspection & Grouping</h2><p>Defaults, field info, grouped aggregates</p></div>
+    </div>
+
+    <!-- 18. default_get() -->
+    <div class="method-card" id="default_get">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-indigo">📋</div>
+                <div><div class="method-name">.default_get(fields)</div><div class="method-one-liner">New record ke default values return karta hai</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-read">READ</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Form open hota hai Create mein toh <code>default_get()</code> call hota hai defaults laane ke liye.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div>
+<pre><code><span class="cm"># ── Override defaults ──</span>
+<span class="kw">def</span> <span class="fn">default_get</span>(<span class="sf">self</span>, fields_list):
+    defaults = <span class="kw">super</span>().<span class="fn">default_get</span>(fields_list)
+    defaults[<span class="st">'warehouse_id'</span>] = <span class="sf">self</span>.env.user.property_warehouse_id.id
+    <span class="kw">return</span> defaults
+<span class="cm"># Now every new record gets user's warehouse</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 19. fields_get() -->
+    <div class="method-card" id="fields_get">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-blue">📐</div>
+                <div><div class="method-name">.fields_get(attributes)</div><div class="method-one-liner">Model ke fields ki metadata dictionary</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-util">UTILITY</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span></div>
+<pre><code><span class="sf">info</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">fields_get</span>(
+    attributes=[<span class="st">'string'</span>, <span class="st">'type'</span>, <span class="st">'required'</span>]
+)
+<span class="cm"># → {'name': {'string':'Name', 'type':'char', 'required':True}}</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 20. read_group() -->
+    <div class="method-card" id="read_group">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-red">📊</div>
+                <div><div class="method-name">.read_group(domain, fields, groupby)</div><div class="method-one-liner">SQL GROUP BY — aggregated data dashboards ke liye</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-search">SEARCH</span><span class="badge badge-read">READ</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Dashboard banani hai? "Har state mein kitne orders aur total amount?" — <code>read_group()</code> se SQL GROUP BY chalta hai. Bahut fast!</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></div>
+<pre><code><span class="sf">data</span> = self.env[<span class="st">'sale.order'</span>].<span class="fn">read_group</span>(
+    domain=[],
+    fields=[<span class="st">'state'</span>, <span class="st">'amount_total:sum'</span>],
+    groupby=[<span class="st">'state'</span>],
+)
+<span class="cm"># → [</span>
+<span class="cm">#   {'state': 'draft', 'amount_total': 50000, '__count': 10},</span>
+<span class="cm">#   {'state': 'sale',  'amount_total': 500000, '__count': 45},</span>
+<span class="cm"># ]</span></code></pre></div></div>
+            <div class="reallife-box"><strong>🏢</strong> Sales dashboard charts, inventory reports, CRM pipeline stats — sab <code>read_group()</code> se.</div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════ SECTION 6: ENVIRONMENT ═══════════════════════ -->
+    <div class="section-divider">
+        <div class="divider-icon" style="background:rgba(0,160,157,0.1);color:#00A09D;">🌐</div>
+        <div class="divider-text"><h2>Environment Methods</h2><p>Context, user switch, sudo, company switch</p></div>
+    </div>
+
+    <!-- 21. with_context() -->
+    <div class="method-card" id="with_context">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-teal">📋</div>
+                <div><div class="method-name">.with_context(**kw)</div><div class="method-one-liner">Naye context ke saath recordset copy</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-env">ENV</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Context = dictionary jo env ke saath travel karta hai. Language change, defaults set, custom flags — sab <code>with_context()</code> se.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span></div>
+<pre><code><span class="cm"># ── Change language ──</span>
+<span class="sf">hindi</span> = partner.<span class="fn">with_context</span>(lang=<span class="st">'hi_IN'</span>)
+
+<span class="cm"># ── Default values via context ──</span>
+self.env[<span class="st">'sale.order'</span>].<span class="fn">with_context</span>(
+    default_partner_id=<span class="nu">42</span>
+).<span class="fn">create</span>({})
+
+<span class="cm"># ── Custom flag ──</span>
+<span class="sf">self</span>.<span class="fn">with_context</span>(skip_check=<span class="kw">True</span>).<span class="fn">action_confirm</span>()</code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 22. with_user() -->
+    <div class="method-card" id="with_user">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-blue">👤</div>
+                <div><div class="method-name">.with_user(user)</div><div class="method-one-liner">Kisi aur user ke perspective se access</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-env">ENV</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span></div>
+<pre><code><span class="sf">demo</span> = self.env.<span class="fn">ref</span>(<span class="st">'base.user_demo'</span>)
+<span class="sf">orders</span> = self.env[<span class="st">'sale.order'</span>].<span class="fn">with_user</span>(demo).<span class="fn">search</span>([])
+<span class="cm"># Only orders demo user can access</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 23. with_company() -->
+    <div class="method-card" id="with_company">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-purple">🏢</div>
+                <div><div class="method-name">.with_company(company)</div><div class="method-one-liner">Multi-company mein company switch</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-env">ENV</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span></div>
+<pre><code><span class="sf">other</span> = self.env[<span class="st">'res.company'</span>].<span class="fn">browse</span>(<span class="nu">2</span>)
+<span class="sf">stock</span> = product.<span class="fn">with_company</span>(other).qty_available
+<span class="cm"># Company-specific stock level</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 24. sudo() -->
+    <div class="method-card" id="sudo">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-red">🛡️</div>
+                <div><div class="method-name">.sudo()</div><div class="method-one-liner">Superuser — sab access rights bypass</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-env">ENV</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Normal user ke paas permission nahi but code ko operation karna zaroori hai — <code>sudo()</code> laga do. SUPERUSER mode! But SAMBHAL KE — zyada sudo = security risk.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
+<pre><code><span class="cm"># ── Portal user can't write normally ──</span>
+order.<span class="fn">sudo</span>().<span class="fn">write</span>({<span class="st">'state'</span>: <span class="st">'sent'</span>})
+
+<span class="cm"># ── Create as superuser ──</span>
+self.env[<span class="st">'mail.message'</span>].<span class="fn">sudo</span>().<span class="fn">create</span>({
+    <span class="st">'body'</span>: <span class="st">'System notification'</span>,
+})</code></pre></div></div>
+            <div class="warning-box"><strong>⚠️ Golden Rule:</strong> sudo() sirf jahan absolutely zaroori ho. User ko sudo data mat dikhao.</div>
+        </div>
+    </div>
+
+    <!-- 25. env.ref() -->
+    <div class="method-card" id="ref">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-green">🏷️</div>
+                <div><div class="method-name">self.env.ref(xml_id)</div><div class="method-one-liner">XML ID se seedha record fetch</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-env">ENV</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
+<pre><code><span class="sf">admin</span> = self.env.<span class="fn">ref</span>(<span class="st">'base.user_admin'</span>)
+<span class="sf">group</span> = self.env.<span class="fn">ref</span>(<span class="st">'sales_team.group_sale_manager'</span>)
+
+<span class="cm"># ── Safe version ──</span>
+<span class="sf">maybe</span> = self.env.<span class="fn">ref</span>(
+    <span class="st">'module.might_not_exist'</span>, raise_if_not_found=<span class="kw">False</span>
+)</code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════ SECTION 7: CACHE ═══════════════════════ -->
+    <div class="section-divider">
+        <div class="divider-icon" style="background:rgba(253,203,110,0.15);color:#CC8E35;">⚙️</div>
+        <div class="divider-text"><h2>Cache & Database</h2><p>ORM cache control</p></div>
+    </div>
+
+    <!-- 26. flush_model() -->
+    <div class="method-card" id="flush">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-yellow">💾</div>
+                <div><div class="method-name">.flush_model() / .flush_recordset()</div><div class="method-one-liner">Pending writes ko DB mein force-push</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-util">UTILITY</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span></div>
+<pre><code>self.env[<span class="st">'res.partner'</span>].<span class="fn">flush_model</span>()       <span class="cm"># All partners</span>
+self.env[<span class="st">'res.partner'</span>].<span class="fn">flush_model</span>([<span class="st">'name'</span>]) <span class="cm"># Specific fields</span>
+partner.<span class="fn">flush_recordset</span>()                    <span class="cm"># Specific records</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 27. invalidate_model() -->
+    <div class="method-card" id="invalidate">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-red">🔄</div>
+                <div><div class="method-name">.invalidate_model()</div><div class="method-one-liner">ORM cache clear — fresh data DB se aayega</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-util">UTILITY</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span></div>
+<pre><code><span class="cm"># After raw SQL, invalidate cache</span>
+self.env.cr.<span class="fn">execute</span>(<span class="st">"UPDATE res_partner SET name='X' WHERE id=42"</span>)
+self.env[<span class="st">'res.partner'</span>].<span class="fn">invalidate_model</span>()
+<span class="cm"># Next access → fresh from DB</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════ SECTION 8: DECORATORS ═══════════════════════ -->
+    <div class="section-divider">
+        <div class="divider-icon" style="background:rgba(232,67,147,0.1);color:#E84393;">🎀</div>
+        <div class="divider-text"><h2>API Decorators</h2><p>@api.depends, onchange, constrains — the magic</p></div>
+    </div>
+
+    <!-- 28. @api.onchange -->
+    <div class="method-card" id="onchange">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-pink">⚡</div>
+                <div><div class="method-name">@api.onchange('field')</div><div class="method-one-liner">UI mein field change pe turant action</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-decorator">DECORATOR</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Customer select kiya → address auto-fill. Product select kiya → price aaya. Yeh sirf UI event hai — DB mein kuch nahi hota save se pehle.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span></div>
+<pre><code><span class="dc">@api.onchange</span>(<span class="st">'partner_id'</span>)
+<span class="kw">def</span> <span class="fn">_onchange_partner</span>(<span class="sf">self</span>):
+    <span class="kw">if</span> <span class="sf">self</span>.partner_id:
+        <span class="sf">self</span>.phone = <span class="sf">self</span>.partner_id.phone
+        <span class="sf">self</span>.email = <span class="sf">self</span>.partner_id.email
+
+<span class="cm"># ── Warning message ──</span>
+<span class="dc">@api.onchange</span>(<span class="st">'quantity'</span>)
+<span class="kw">def</span> <span class="fn">_onchange_qty</span>(<span class="sf">self</span>):
+    <span class="kw">if</span> <span class="sf">self</span>.quantity > <span class="nu">1000</span>:
+        <span class="kw">return</span> {<span class="st">'warning'</span>: {
+            <span class="st">'title'</span>: <span class="st">'Bahut zyada!'</span>,
+            <span class="st">'message'</span>: <span class="st">'1000+ sure hai?'</span>
+        }}</code></pre></div></div>
+            <div class="info-box"><strong>💡</strong> <code>onchange</code> = sirf UI. <code>computed</code> = hamesha (code/import/API sab).</div>
+        </div>
+    </div>
+
+    <!-- 29. @api.depends -->
+    <div class="method-card" id="depends">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-green">🔄</div>
+                <div><div class="method-name">@api.depends('field')</div><div class="method-one-liner">Computed field ki dependencies define karta hai</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-decorator">DECORATOR</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> total = price × qty. Jab price ya qty badle toh total bhi badle — <code>@api.depends</code> yeh batata hai ki KAB recalculate karna hai.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span></div>
+<pre><code><span class="sf">total</span> = fields.Float(compute=<span class="st">'_compute_total'</span>, store=<span class="kw">True</span>)
+
+<span class="dc">@api.depends</span>(<span class="st">'price'</span>, <span class="st">'quantity'</span>, <span class="st">'discount'</span>)
+<span class="kw">def</span> <span class="fn">_compute_total</span>(<span class="sf">self</span>):
+    <span class="kw">for</span> rec <span class="kw">in</span> <span class="sf">self</span>:
+        rec.total = rec.price * rec.quantity * (<span class="nu">1</span> - rec.discount/<span class="nu">100</span>)
+
+<span class="cm"># ── Depends on One2many lines ──</span>
+<span class="dc">@api.depends</span>(<span class="st">'line_ids.subtotal'</span>)
+<span class="kw">def</span> <span class="fn">_compute_amount</span>(<span class="sf">self</span>):
+    <span class="kw">for</span> rec <span class="kw">in</span> <span class="sf">self</span>:
+        rec.total_amount = <span class="fn">sum</span>(rec.line_ids.<span class="fn">mapped</span>(<span class="st">'subtotal'</span>))</code></pre></div></div>
+            <div class="warning-box"><strong>⚠️</strong> <code>store=True</code> → DB mein save, searchable. <code>store=False</code> → on-the-fly, not searchable.</div>
+        </div>
+    </div>
+
+    <!-- 30. @api.constrains -->
+    <div class="method-card" id="constrains">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-red">🚫</div>
+                <div><div class="method-name">@api.constrains('field')</div><div class="method-one-liner">Save pe validation — fail toh error</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-decorator">DECORATOR</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span></div>
+<pre><code><span class="kw">from</span> odoo.exceptions <span class="kw">import</span> ValidationError
+
+<span class="dc">@api.constrains</span>(<span class="st">'price'</span>)
+<span class="kw">def</span> <span class="fn">_check_price</span>(<span class="sf">self</span>):
+    <span class="kw">for</span> rec <span class="kw">in</span> <span class="sf">self</span>:
+        <span class="kw">if</span> rec.price < <span class="nu">0</span>:
+            <span class="kw">raise</span> ValidationError(<span class="st">"Price negative nahi ho sakta!"</span>)
+
+<span class="cm"># ── SQL Constraint (faster, DB level) ──</span>
+_sql_constraints = [
+    (<span class="st">'positive_price'</span>, <span class="st">'CHECK(price >= 0)'</span>, <span class="st">'Price must be positive!'</span>),
+    (<span class="st">'unique_code'</span>, <span class="st">'UNIQUE(code)'</span>, <span class="st">'Code already exists!'</span>),
+]</code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 31. @api.model -->
+    <div class="method-card" id="model_dec">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-purple">🏗️</div>
+                <div><div class="method-name">@api.model</div><div class="method-one-liner">Model-level method — kisi specific record ki zarurat nahi</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-decorator">DECORATOR</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div>
+<pre><code><span class="dc">@api.model</span>
+<span class="kw">def</span> <span class="fn">get_dashboard_data</span>(<span class="sf">self</span>):
+    <span class="kw">return</span> {
+        <span class="st">'total'</span>: <span class="sf">self</span>.<span class="fn">search_count</span>([]),
+        <span class="st">'drafts'</span>: <span class="sf">self</span>.<span class="fn">search_count</span>([(<span class="st">'state'</span>,<span class="op">=</span>,<span class="st">'draft'</span>)]),
+    }</code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 32. @api.returns -->
+    <div class="method-card" id="returns_dec">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-teal">↩️</div>
+                <div><div class="method-name">@api.returns('model')</div><div class="method-one-liner">RPC pe return type specify karta hai (rare)</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-decorator">DECORATOR</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span></div>
+<pre><code><span class="dc">@api.returns</span>(<span class="st">'res.partner'</span>)
+<span class="kw">def</span> <span class="fn">get_main_partner</span>(<span class="sf">self</span>):
+    <span class="kw">return</span> <span class="sf">self</span>.partner_id  <span class="cm"># RPC → returns ID(s)</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 33. @api.autovacuum -->
+    <div class="method-card" id="autovacuum">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-orange">🧹</div>
+                <div><div class="method-name">@api.autovacuum</div><div class="method-one-liner">Daily auto cleanup — cron job banane ki zarurat nahi</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-decorator">DECORATOR</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+<pre><code><span class="dc">@api.autovacuum</span>
+<span class="kw">def</span> <span class="fn">_gc_old_logs</span>(<span class="sf">self</span>):
+    <span class="cm"># Called daily by Odoo's built-in cron</span>
+    <span class="sf">old</span> = <span class="sf">self</span>.<span class="fn">search</span>([(<span class="st">'create_date'</span>, <span class="op">&lt;</span>, <span class="st">'2024-01-01'</span>)])
+    old.<span class="fn">unlink</span>()</code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════ SECTION 9: SET OPS ═══════════════════════ -->
+    <div class="section-divider">
+        <div class="divider-icon" style="background:rgba(108,92,231,0.1);color:#6C5CE7;">🔗</div>
+        <div class="divider-text"><h2>Set Operations & Properties</h2><p>Combine, intersect, subtract, IDs</p></div>
+    </div>
+
+    <!-- 34. Union | -->
+    <div class="method-card" id="union">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-indigo">➕</div>
+                <div><div class="method-name">set_a | set_b (Union)</div><div class="method-one-liner">Do sets merge — duplicates remove</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-record">RECORDSET</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span></div>
+<pre><code><span class="sf">mumbai</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">search</span>([(<span class="st">'city'</span>,<span class="op">=</span>,<span class="st">'Mumbai'</span>)])
+<span class="sf">delhi</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">search</span>([(<span class="st">'city'</span>,<span class="op">=</span>,<span class="st">'Delhi'</span>)])
+<span class="sf">combined</span> = mumbai <span class="op">|</span> delhi  <span class="cm"># Both cities, no duplicates</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 35. Intersection & -->
+    <div class="method-card" id="intersect">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-blue">🔗</div>
+                <div><div class="method-name">set_a &amp; set_b (Intersection)</div><div class="method-one-liner">Common records dono mein</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-record">RECORDSET</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span></div>
+<pre><code><span class="sf">customers</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">search</span>([(<span class="st">'customer_rank'</span>,<span class="op">&gt;</span>,<span class="nu">0</span>)])
+<span class="sf">vendors</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">search</span>([(<span class="st">'supplier_rank'</span>,<span class="op">&gt;</span>,<span class="nu">0</span>)])
+<span class="sf">both</span> = customers <span class="op">&amp;</span> vendors  <span class="cm"># Customer AND vendor</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 36. Subtract - -->
+    <div class="method-card" id="subtract">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-red">➖</div>
+                <div><div class="method-name">set_a - set_b (Subtract)</div><div class="method-one-liner">Pehle se doosre ke records hata do</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-record">RECORDSET</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span></div>
+<pre><code><span class="sf">all_p</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">search</span>([])
+<span class="sf">inactive</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">search</span>([(<span class="st">'active'</span>,<span class="op">=</span>,<span class="kw">False</span>)])
+<span class="sf">active_only</span> = all_p <span class="op">-</span> inactive</code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 37. .ids / .id -->
+    <div class="method-card" id="ids">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-green">🔢</div>
+                <div><div class="method-name">.ids / .id</div><div class="method-one-liner">Record IDs as integers</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-record">PROPERTY</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+<pre><code>partner.id       <span class="cm"># → 42 (single int)</span>
+partners.ids     <span class="cm"># → [1, 5, 42] (list)</span>
+
+<span class="cm"># ── Useful in domains ──</span>
+domain = [(<span class="st">'partner_id'</span>, <span class="st">'in'</span>, partners.ids)]</code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 38. self.env[] -->
+    <div class="method-card" id="env_access">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-teal">🌐</div>
+                <div><div class="method-name">self.env['model']</div><div class="method-one-liner">Kisi bhi model ka empty recordset</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-env">ENV</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span></div>
+<pre><code><span class="cm"># ── Access any model ──</span>
+Partner = self.env[<span class="st">'res.partner'</span>]
+Product = self.env[<span class="st">'product.product'</span>]
+
+<span class="cm"># ── Env properties ──</span>
+self.env.uid          <span class="cm"># Current user ID</span>
+self.env.user         <span class="cm"># Current user record</span>
+self.env.company      <span class="cm"># Current company</span>
+self.env.cr           <span class="cm"># Database cursor</span>
+self.env.context      <span class="cm"># Context dict</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 39. new() -->
+    <div class="method-card" id="new">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-orange">🆕</div>
+                <div><div class="method-name">.new(vals)</div><div class="method-one-liner">Memory-only record — DB mein save nahi hota</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-util">UTILITY</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Sirf calculation ke liye virtual record chahiye, DB mein nahi jaana — <code>new()</code> use kar.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+<pre><code><span class="sf">temp</span> = self.env[<span class="st">'sale.order.line'</span>].<span class="fn">new</span>({
+    <span class="st">'product_id'</span>: <span class="nu">1</span>,
+    <span class="st">'product_uom_qty'</span>: <span class="nu">10</span>,
+})
+<span class="fn">print</span>(temp.price_subtotal)  <span class="cm"># Computed but NOT in DB</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════ SECTION 10: ODOO 17/18 NEW ═══════════════════════ -->
+    <div class="section-divider">
+        <div class="divider-icon" style="background:rgba(39,174,96,0.1);color:#27AE60;">🆕</div>
+        <div class="divider-text"><h2>Odoo 17/18 New Methods</h2><p>Latest optimized methods</p></div>
+    </div>
+
+    <!-- 40. search_fetch() -->
+    <div class="method-card" id="search_fetch">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-green">🚀</div>
+                <div><div class="method-name">.search_fetch(domain, fields)</div><div class="method-one-liner">Search + prefetch one shot — Odoo 17+</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-search">SEARCH</span><span class="badge badge-read">READ</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Search + specified fields ek query mein load. Performance best hai jab pata hai konse fields chahiye.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span></div>
+<pre><code><span class="sf">partners</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">search_fetch</span>(
+    [(<span class="st">'is_company'</span>, <span class="op">=</span>, <span class="kw">True</span>)],
+    [<span class="st">'name'</span>, <span class="st">'email'</span>, <span class="st">'city'</span>],
+    limit=<span class="nu">10</span>,
+)
+<span class="kw">for</span> p <span class="kw">in</span> partners:
+    <span class="fn">print</span>(p.name, p.email)  <span class="cm"># No extra queries!</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 41. fetch() -->
+    <div class="method-card" id="fetch">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-blue">📥</div>
+                <div><div class="method-name">.fetch(field_names)</div><div class="method-one-liner">Existing recordset ke fields prefetch</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-read">READ</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+<pre><code><span class="sf">partners</span> = self.env[<span class="st">'res.partner'</span>].<span class="fn">search</span>([], limit=<span class="nu">100</span>)
+partners.<span class="fn">fetch</span>([<span class="st">'name'</span>, <span class="st">'email'</span>, <span class="st">'phone'</span>])
+<span class="cm"># Fields loaded in cache for all 100 records</span>
+<span class="kw">for</span> p <span class="kw">in</span> partners:
+    <span class="fn">print</span>(p.name)  <span class="cm"># Already cached!</span></code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- 42. web_read() -->
+    <div class="method-card" id="web_read">
+        <div class="method-header" onclick="this.parentElement.classList.toggle('open')">
+            <div class="method-title-group">
+                <div class="method-icon icon-purple">🌐</div>
+                <div><div class="method-name">.web_read(specification)</div><div class="method-one-liner">Odoo 17+ web client ka internal read</div></div>
+            </div>
+            <div class="method-badges"><span class="badge badge-read">READ</span></div>
+            <span class="method-toggle">▼</span>
+        </div>
+        <div class="method-body">
+            <div class="hinglish-note"><strong>🗣️ Hinglish:</strong> Web client internally <code>read()</code> ki jagah yeh use karta hai. Nested related data ek call mein.</div>
+            <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Python</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+<pre><code><span class="sf">data</span> = partner.<span class="fn">web_read</span>({
+    <span class="st">'name'</span>: {},
+    <span class="st">'email'</span>: {},
+    <span class="st">'country_id'</span>: {<span class="st">'fields'</span>: {<span class="st">'name'</span>: {}, <span class="st">'code'</span>: {}}},
+})</code></pre></div></div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════ CHEAT SHEET ═══════════════════════ -->
+    <h2>📝 Quick Cheat Sheet</h2>
+    <div class="code-block"><div class="code-header"><div class="dots"><span></span><span></span><span></span></div><span class="lang-label">Cheat Sheet</span><button class="copy-btn" onclick="copyCode(this)">📋 Copy</button></div><div class="code-body"><div class="line-numbers"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span><span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span><span>29</span><span>30</span></div>
+<pre><code><span class="cm"># ═══ CRUD ═══</span>
+rec = Model.<span class="fn">create</span>({<span class="st">'name'</span>: <span class="st">'X'</span>})        <span class="cm"># Create</span>
+rec.<span class="fn">write</span>({<span class="st">'name'</span>: <span class="st">'Y'</span>})                <span class="cm"># Update</span>
+rec.<span class="fn">read</span>([<span class="st">'name'</span>])                      <span class="cm"># Read → dicts</span>
+rec.<span class="fn">unlink</span>()                            <span class="cm"># Delete</span>
+
+<span class="cm"># ═══ SEARCH ═══</span>
+Model.<span class="fn">search</span>(domain)                    <span class="cm"># → recordset</span>
+Model.<span class="fn">search_read</span>(domain, fields)      <span class="cm"># → list[dict]</span>
+Model.<span class="fn">search_count</span>(domain)              <span class="cm"># → int</span>
+Model.<span class="fn">browse</span>(<span class="nu">42</span>)                         <span class="cm"># → recordset</span>
+
+<span class="cm"># ═══ RECORDSET ═══</span>
+recs.<span class="fn">filtered</span>(<span class="kw">lambda</span> r: r.x > <span class="nu">5</span>)      <span class="cm"># Filter</span>
+recs.<span class="fn">mapped</span>(<span class="st">'name'</span>)                     <span class="cm"># Extract</span>
+recs.<span class="fn">sorted</span>(<span class="st">'name'</span>)                     <span class="cm"># Sort</span>
+recs.<span class="fn">exists</span>()                           <span class="cm"># Validate</span>
+a <span class="op">|</span> b   a <span class="op">&amp;</span> b   a <span class="op">-</span> b                <span class="cm"># Set ops</span>
+
+<span class="cm"># ═══ ENV ═══</span>
+self.env[<span class="st">'model'</span>]                      <span class="cm"># Access model</span>
+self.env.<span class="fn">ref</span>(<span class="st">'module.xml_id'</span>)          <span class="cm"># By XML ID</span>
+rec.<span class="fn">sudo</span>()                              <span class="cm"># Superuser</span>
+rec.<span class="fn">with_context</span>(key=val)               <span class="cm"># Context</span>
+
+<span class="cm"># ═══ DECORATORS ═══</span>
+<span class="dc">@api.depends</span>(<span class="st">'field'</span>)                  <span class="cm"># Computed</span>
+<span class="dc">@api.onchange</span>(<span class="st">'field'</span>)                 <span class="cm"># UI trigger</span>
+<span class="dc">@api.constrains</span>(<span class="st">'field'</span>)               <span class="cm"># Validate</span>
+<span class="dc">@api.model</span>                              <span class="cm"># Class-level</span></code></pre></div></div>
+
+    <div class="nav-bottom">
+        <a href="../main/developer.html">← All Topics</a>
+        <a href="dev-environment.html">Next: Environment →</a>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="footer-content">
+        <div class="footer-brand">
+            <div class="footer-logo">🟣 Odoo Mastery</div>
+            <p>Har method, har concept — properly explained.</p>
+        </div>
+        <div class="footer-col">
+            <h4>Navigate</h4>
+            <a href="../index.html">Home</a>
+            <a href="../main/developer.html">Developer</a>
+            <a href="../main/functional.html">Functional</a>
+        </div>
+        <div class="footer-col">
+            <h4>Quick Links</h4>
+            <a href="#create">create()</a>
+            <a href="#search">search()</a>
+            <a href="#sudo">sudo()</a>
+            <a href="#depends">@api.depends</a>
+        </div>
+    </div>
+    <div class="footer-bottom">© 2025 Odoo Mastery</div>
+</footer>
+
+<script>
+window.addEventListener('scroll', () => {
+    document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 20);
+});
+function expandAll() {
+    document.querySelectorAll('.method-card').forEach(c => c.classList.add('open'));
+}
+function collapseAll() {
+    document.querySelectorAll('.method-card').forEach(c => c.classList.remove('open'));
+}
+function copyCode(btn) {
+    const code = btn.closest('.code-block').querySelector('pre code').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = '✅ Copied!';
+        setTimeout(() => btn.textContent = '📋 Copy', 2000);
+    });
+}
+document.querySelectorAll('.toc-grid a').forEach(link => {
+    link.addEventListener('click', e => {
+        e.preventDefault();
+        const t = document.querySelector(link.getAttribute('href'));
+        if (t) { t.classList.add('open'); t.scrollIntoView({behavior:'smooth',block:'center'}); }
+    });
+});
+</script>
+
+</body>
+</html>
